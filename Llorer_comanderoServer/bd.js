@@ -1,0 +1,49 @@
+var http = require("http");
+var url = require("url");
+var express = require('express'),
+    cors = require('cors');
+var app = express();
+var config = {
+    user: 'root',
+    password: 'root',
+    server: '127.0.0.1',
+    database: 'ALERTAS_TEST'
+};
+
+function configuracionBD() { return config; }
+// module.exports=configuracionBD;
+exports.config = config;
+/*function obtenerTodo(){
+ 
+app.use(cors());
+
+app.get('/obtenerTo', function (req, res) {
+   
+    var sql = require("mssql");
+
+    // config for your database
+   
+
+    // connect to your database
+    sql.connect(config, function (err) {
+    
+        if (err) console.log(err);
+
+        // create Request object
+        var request = new sql.Request();
+           
+        // query to the database and get the records
+        request.query('select * from Alertas ', function (err, recordset) {
+            
+            if (err) console.log(err)
+
+            // send records as a response
+            res.send(recordset);
+            
+        });
+    });
+
+ 
+});
+}
+exports.obtenerTodo=obtenerTodo;*/
