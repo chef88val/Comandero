@@ -1,0 +1,76 @@
+<ion-modal-view cache-view="false">
+    <!-- <ion-header-bar>
+        <h1 class="title">Login</h1>
+        <div class="buttons">
+            <button class="button button-clear" ng-click="closeLogin()">Close</button>
+        </div>
+    </ion-header-bar>-->
+    <ion-content>
+        <div class="card">
+            <div class="item item-divider">
+                Categorias
+            </div>
+            <div class="item item-text-wrap">
+                <div class="row">
+                    <div class="col">
+                        <ion-scroll style="height: 170px">
+                            <ion-list>
+                                <ion-item ng-repeat="item in modal.listaCategorias" class="categoriaSeleccionada" ng-click="modal.categoriaSeleccionada(item.idcategoria_bebida)">
+                                    {{item.nombre_categoria}}
+                                </ion-item>
+                            </ion-list>
+                        </ion-scroll>
+                    </div>
+                    <div class="col">
+                        <ion-scroll style="height: 200px">
+                            <ion-list>
+                                <ion-item ng-repeat="item in modal.listaBebidas" ng-click="modal.bebidaSeleccionada(item.idbebida)">
+                                    {{item.nombre}}
+                                </ion-item>
+                            </ion-list>
+                        </ion-scroll>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="item item-divider">
+                Bebidas
+            </div>
+            <div class="item item-text-wrap">
+                <div class="row">
+                    <ion-scroll style="height: 200px">
+                        <ion-list>
+                            <ion-item ng-repeat="item in modal.listaBebidasMesaTMP">
+                                <div class="row">
+                                    <div class="col">
+                                        <h4>{{item.nombre}}</h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col"><button class="button button-assertive icon ion-minus-circled" ng-click="item.cantidad= item.cantidad-1"></button></div>
+                                    <div class="col">
+                                        <div class="item text-input" value="{{item.idbebida}}" name="cBebida" ng-model="item.cantidad">{{item.cantidad}}</div>
+                                    </div>
+                                    <div class="col"><button class="button button-balanced  icon ion-plus-circled" ng-click="item.cantidad= item.cantidad+1"></button></div>
+                                    <div class="col"> <button class="button button-positive  icon ion-checkmark-circled" ng-click="registrarPerfil()"></button></div>
+                                </div>
+                                <div class="row">
+                                </div>
+                            </ion-item>
+                        </ion-list>
+                    </ion-scroll>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+    <ion-footer-bar align-title="center" class="bar-balanced">
+        <!--<div class="buttons">
+            <button class="button"></button>
+        </div>-->
+        <div class="title" ng-click="modal.closeLogin()">Añadir todo</div>
+        <!--<div class="buttons" ng-click="doSomething()">
+            <button class="button">Right Button</button>
+        </div>-->
+    </ion-footer-bar>
+</ion-modal-view>

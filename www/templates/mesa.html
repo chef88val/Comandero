@@ -1,0 +1,55 @@
+<ion-view view-title="Mesas">
+    <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-chevron-left" ng-click="goBack()"></button>
+    </ion-nav-buttons>
+    <ion-content>
+        <div class="card">
+            <div class="item item-divider">
+                <h1> {{mesaSeleccionada.referencia}}</h1>
+            </div>
+            <div class="item item-text-wrap">
+                <p>Total:{{totalDineroMesaSeleccionada}}€-<input id="nPersonaMesaValue" ng-model="nPersonaMesaValue" />-{{totalDineroMesaSeleccionada/nPersonaMesaValue}}€/pax</p>
+
+            </div>
+        </div>
+        <div class="card">
+            <div class="item item-divider" ng-click="resumenBebidaMesa()">
+
+                <span> Bebida </span> <i class="icon ion-share"></i>
+            </div>
+            <div class="item item-text-wrap">
+                <ion-scroll style="height: 370px">
+                    <ion-list>
+                        <ion-item ng-repeat="item in listaBebidasMesa">
+                            <div class="row">
+                                <div class="col">
+                                    <h2>{{item.nombre}}</h2>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col"><button class="button button-assertive icon ion-minus-circled" ng-click="count= count-1"></button></div>
+                                <div class="col">
+                                    {{item.cantidad}}
+                                    <div class="item text-input" value="" name="cBebida" ng-model="contador">{{count}}</div>
+                                </div>
+                                <div class="col"><button class="button button-balanced  icon ion-plus-circled" ng-click="count= count+1"></button></div>
+                                <div class="col"> <button class="button button-positive  icon ion-checkmark-circled" ng-click="actualizarBebida(item.idbebida,count)"></button></div>
+                            </div>
+                            <div class="row">
+                            </div>
+                        </ion-item>
+                    </ion-list>
+                </ion-scroll>
+            </div>
+        </div>
+    </ion-content>
+    <ion-footer-bar align-title="center" class="bar-balanced">
+        <!--<div class="buttons">
+            <button class="button"></button>
+        </div>-->
+        <div class="title" ng-click="modal.show()">Añadir</div>
+        <!--<div class="buttons" ng-click="doSomething()">
+            <button class="button">Right Button</button>
+        </div>-->
+    </ion-footer-bar>
+</ion-view>

@@ -1,0 +1,18 @@
+.service('utilsService', function($ionicModal) {
+        this.showModal = function() {
+
+            var service = this;
+
+            $ionicModal.fromTemplateUrl('templates/personal.html', {
+                scope: null,
+                controller: 'MyModalCotroller'
+            }).then(function(modal) {
+                service.modal = modal;
+                service.modal.show();
+            });
+        };
+
+        this.hideModal = function() {
+            this.modal.hide();
+        };
+    })

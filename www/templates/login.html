@@ -1,0 +1,50 @@
+<!--<ion-nav-bar>
+    <ion-nav-buttons side="right">
+        <button class="button button-light" ng-click="doSomething()">
+        Close
+      </button>
+    </ion-nav-buttons>
+    <ion-header-bar>
+        <h1 class="title">Login</h1>
+        <div class="buttons">
+            <button class="button button-default" ng-click="closeLogin()">Close</button>
+        </div>
+    </ion-header-bar>
+</ion-nav-bar>-->
+<ion-modal-view>
+    <ion-header-bar>
+        <h1 class="title">Login</h1>
+        <div class="buttons">
+            <button class="button button-clear" ng-click="closeLogin()">Cerrar</button>
+        </div>
+    </ion-header-bar>
+    <!--<ion-nav-bar>
+        <ion-nav-buttons side="right">
+            <button class="button button-light" ng-click="doSomething()">
+        Close
+      </button>
+        </ion-nav-buttons>
+
+    </ion-nav-bar>-->
+    <!--<ion-header-bar>
+    <h1 class="title">Login</h1>
+    <div class="buttons">
+      <button class="button button-default" ng-click="closeLogin()">Close</button>
+    </div>
+  </ion-header-bar>-->
+    <ion-content>
+        <form ng-submit="doLogin()">
+            <div class="list">
+
+                <label class="item item-input">
+          <span class="input-label">Password</span>
+          <input type="password" ng-model="loginData.clave">
+        </label>
+                <label class="item">
+          <button class="button button-block button-positive" type="submit">Entrar</button>
+        </label>
+            </div>
+        </form>
+    </ion-content>
+
+</ion-modal-view>

@@ -1,0 +1,12 @@
+<ion-view view-title="Lista de mesas" ng-init="mostrarMesas()">
+    <ion-content>
+        <ion-list>
+            <ion-item ng-repeat="mesa in mesas" ng-click="abrirMesa(mesa.idmesa)">
+                <!--href="#/app/mesas/{{mesa.idmesa}}"-->
+
+                <span ng-if="mesa.estado['data']=='0'" class="nok">{{mesa.referencia}}</span>
+                <span ng-if="mesa.estado['data']=='1'" class="ok">{{mesa.referencia}}</span>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,101 @@
+<ion-view view-title="Administrador">
+    <ion-content>
+        <!--<h1 ng-if="administradorActivo || rootActivo">administradorActivo</h1>
+        <h1 ng-if="rootActivo">rootActivo</h1>-->
+        <div class="card">
+            <div class="item item-divider">
+                Gestionar entradas/ salidas
+            </div>
+            <div class="item item-text-wrap">
+                <button class="button button-full button-block button-balanced" ng-click="accionPersonal(1)">  Entrar personal</button>
+                <button class="button button-full button-outline button-balanced" ng-click="accionPersonal(10)">  Listado personal</button>
+                <button class="button button-full button-block button-stable" ng-click="accionPersonal(20)">  Listado personal</button>
+                <button class="button button-full button-outline button-assertive" ng-click="accionPersonal(30)">  Listado personal</button>
+                <button class="button button-full button-block button-assertive" ng-click="accionPersonal(2)">  Sacar Button</button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="item item-divider">
+                Gestionar horas
+            </div>
+            <div class="item item-text-wrap">
+                <div class="item item-text-wrap">
+                    <span>Trabajador:</span>
+                    <select value="nombreCategoria" name="nombreCategoria" ng-model="trabajadorHoras.id">
+                        <option value="{{item.idpersonal}}" ng-repeat="item in obtenerPersonal">{{item.Nombre}}
+                    </select>
+                </div>
+                <div class="item item-divider">
+                    <button class="button button-full button-positive" ng-click="trabajadorCalcularHoras()">Total horas</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="item item-divider">
+                    Añadir categoria bebida
+                </div>
+                <div class="item item-text-wrap">
+                    <span>Nombre categoria:</span>
+                    <input type="text" placeholder="Nombre categoria" value="nombreCategoria" name="nombreCategoria" ng-model="nCategoriaData.Nombre">
+                </div>
+                <div class="item item-divider">
+                    <button class="button button-full button-positive" ng-click="categoriaGuardar()">Guardar categoria de bebida</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="item item-divider">
+                    Añadir zona
+                </div>
+                <div class="item item-text-wrap">
+                    <span>Nombre zona:</span>
+                    <input type="text" placeholder="Nombre zona" value="nombreZona" name="nombreZona" ng-model="nZonaData.Nombre">
+                </div>
+                <div class="item item-divider">
+                    <button class="button button-full button-positive" ng-click="zonaGuardar()">Guardar zona</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="item item-divider">
+                    Añadir bebida
+                </div>
+                <div class="item item-text-wrap">
+                    <span>Nombre bebida:</span>
+                    <input type="text" placeholder="Nombre" value="nombreBebida" name="nombreBebida" ng-model="nBebidaData.Nombre">
+                    <select value="nombreCategoria" name="nombreCategoria" ng-model="nBebidaData.Categoria">
+                  <option value="{{item.idcategoria_bebida}}" ng-repeat="item in listaCategorias">{{item.nombre_categoria}}</option>
+                </select>
+                    <input type="text" value="nombrePrecio" name="nombrePrecio" ng-model="nBebidaData.Precio" placeholder="Precio">
+                </div>
+                <div class="item item-divider">
+                    <button class="button button-full button-positive" ng-click="bebidaGuardar()">Guardar bebida</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="item item-divider">
+                    Actualizar bebida
+                </div>
+                <div class="item item-text-wrap">
+                    <span>Nombre bebida:</span>
+                    <select value="nombreCategoria" name="nombreCategoria" ng-model="nBebidaDataActualizar.Categoria">
+                  <option value="{{item.idbebida}}" ng-repeat="item in listaBebidas">{{item.nombre}}</option>
+                </select>
+                    <input type="text" value="nombrePrecioActualizar" name="nombrePrecioActualizar" ng-model="nBebidaDataActualizar.Precio" placeholder="Precio">
+                </div>
+                <div class="item item-divider">
+                    <button class="button button-full button-positive" ng-click="bebidaActualizar()">Actualizar bebida</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="item item-divider">
+                    Añadir mesa
+                </div>
+                <div class="item item-text-wrap">
+                    <span>Nombre mesa:</span>
+                    <input type="text" placeholder="Nombre" value="nombreMesa" name="nombreMesa" ng-model="nMesaData.Nombre">
+                </div>
+                <div class="item item-divider">
+                    <button class="button button-full button-positive" ng-click="mesaGuardar()">Guardar mesa</button>
+                </div>
+            </div>
+    </ion-content>
+</ion-view>

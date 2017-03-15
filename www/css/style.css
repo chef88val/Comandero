@@ -1,0 +1,64 @@
+/* Empty. Add your own CSS if you like */
+
+.center {
+    text-align: center
+}
+
+.ok {
+    color: green;
+}
+
+a.ok {
+    color: green;
+}
+
+.nok {
+    color: red;
+}
+
+.text-input {
+    width: 80%;
+    font-size: 40px;
+    text-align: center;
+    margin-left: 30%;
+    border: none;
+}
+
+div.col {}
+
+div.col>span.text-input {
+    padding-top: 25px
+}
+
+ion-item.item:hover a {
+    background-color: seagreen;
+    box-shadow: inset 0px 0px 0px 1px red;
+}
+
+ion-item.categoriaSeleccionada.item:hover {
+    background-color: red;
+}
+
+ion-item.categoriaSeleccionada.item:focus {
+    background-color: silver;
+}
+
+.list>ion-item.item {
+    /*border: none;*/
+}
+
+#nPersonaMesaValue {
+    width: 10%;
+    border: none;
+    margin-left: 10px;
+    margin-right: 0;
+}
+
+i.icon.ion-share {
+    float: right;
+    font-size: 30px
+}
+
+.card>.item>span {
+    font-size: 30px;
+}

@@ -1,0 +1,74 @@
+<ion-modal-view cache-view="false" ng-controller="modalPersonalCtrl">
+    <!-- <ion-header-bar>
+        <h1 class="title">Login</h1>
+        <div class="buttons">
+            <button class="button button-clear" ng-click="closeLogin()">Close</button>
+        </div>
+    </ion-header-bar>-->
+    <ion-content>
+        <div class="card">
+            <div class="item item-divider">
+                Zonas
+            </div>
+            <div class="item item-text-wrap">
+                <div class="row">
+                    <div class="col">
+                        <ion-scroll style="height: 170px">
+                            <ion-list>
+                                <ion-item ng-repeat="item in listaZonas" class="categoriaSeleccionada" ng-click="zonaSeleccionada(item.idcategoria_zona)">
+                                    {{item.nombre_zona}}
+                                </ion-item>
+                            </ion-list>
+                        </ion-scroll>
+                    </div>
+                    <div class="col">
+                        <ion-scroll style="height: 200px">
+                            <ion-list>
+                                <ion-item ng-repeat="item in listaPersonal" ng-click="personalSeleccionada(item.idpersonal)">
+                                    {{item.Nombre}}
+                                </ion-item>
+                            </ion-list>
+                        </ion-scroll>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="item item-divider">
+                Lista de entrada/ salida
+            </div>
+            <div class="item item-text-wrap">
+                <div class="row">
+                    <ion-scroll style="height: 200px">
+                        <ion-list>
+                            <ion-item ng-repeat="item in listaPersonalTMP">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="ok" ng-if="accionPersonal==1">
+                                            {{item.nombre}}
+                                        </div>
+                                        <div class="" ng-if="accionPersonal==0">
+                                            {{item.nombre}}
+                                        </div>
+                                        <div class="nok" ng-if="accionPersonal==2">
+                                            {{item.nombre}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </ion-item>
+                        </ion-list>
+                    </ion-scroll>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+    <ion-footer-bar align-title="center" class="bar-balanced">
+        <!--<div class="buttons">
+            <button class="button"></button>
+        </div>-->
+        <div class="title" ng-click="hideModal()">Añadir todo</div>
+        <!--<div class="buttons" ng-click="doSomething()">
+            <button class="button">Right Button</button>
+        </div>-->
+    </ion-footer-bar>
+</ion-modal-view>
