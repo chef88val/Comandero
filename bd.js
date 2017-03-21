@@ -10,6 +10,13 @@ var config = {
     database: 'ALERTAS_TEST'
 };
 
+/*var config = {
+    user: 'vvrguvizleixrr',
+    password: '8b96cc5036b5c9670d3a6b9a73f16b0e8de39d28907d1bf168d741c3f691e9a2',
+    server: 'ec2-176-34-186-178.eu-west-1.compute.amazonaws.com',
+    database: 'd5eas1d1slvfm1'
+};*/
+
 function configuracionBD() { return config; }
 // module.exports=configuracionBD;
 exports.config = config;
