@@ -1,6 +1,9 @@
-angular.module('starter.controllers', ['starter.services'])
+angular.module('starter.controllers', ['starter.services', 'ionic-notification-bar'])
 
-.controller('AppCtrl', function($scope, $state, $ionicModal, $timeout, $rootScope, UsuarioServicio, $localstorage) {
+.controller('AppCtrl', function($scope, $state, $ionicModal, $timeout, $rootScope, UsuarioServicio, $localstorage, $notificationBar) {
+    /*$notificationBar.timer = 1000;
+    $notificationBar.show('Your message here', $notificationBar.SUCCESS);
+    */
     $scope.nCategoriaData = {};
     $scope.nBebidaData = {};
     $scope.nZonaData = {};
@@ -54,9 +57,9 @@ angular.module('starter.controllers', ['starter.services'])
 
         // Simulate a login delay. Remove this and replace with your login
         // code if using a login system
-        $timeout(function() {
-            $scope.closeLogin();
-        }, 1000);
+        //$timeout(function() {
+        $scope.closeLogin();
+        //}, 1000);
     };
 })
 
@@ -173,10 +176,45 @@ angular.module('starter.controllers', ['starter.services'])
         $scope.hideModal = function() { $scope.modal.hide() }
 
     })
-    .controller('MesaCtrl', function($scope, modalPersonalService, $rootScope, $state, $stateParams, $ionicModal, $ionicPopup, $ionicHistory, UsuarioServicio) {
+    .controller('modalFacturarCtrl', function($scope, $rootScope, modalFacturarService, $state, $stateParams, $ionicModal, $ionicPopup, $ionicHistory, UsuarioServicio) {
+        $scope.modalFacturarService = modalFacturarService
+        $scope.metodosPago = [{ nombre: "Efectivo" }, { nombre: "Tarjeta" }]
+        $scope.totalDineroMesaSeleccionada = $rootScope.totalDineroMesaSeleccionada
+        $scope.mesaSeleccionada = $rootScope.mesaSeleccionada
+        console.log($rootScope.totalDineroMesaSeleccionada + "$rootScope.totalDineroMesaSeleccionada")
+        $scope.pagoSeleccionada = function(id) {
+                /*console.log("pagoSeleccionada" + id)
+                if (id === "Efectivo") $scope.metodoPago = "Efectivo";
+                else if (id === "Tarjeta") $scope.metodoPago = "Tarjeta"*/
+                $ionicPopup.confirm({
+                    title: 'Cerrar mesa ' + $scope.mesaSeleccionada.referencia,
+                    template: 'Estas segura que deseas cerrar la mesa <b>' + id + '</b>'
+                }).then(function(res) {
+                    if (res) {
+
+                        UsuarioServicio.addPagoMesa($scope.mesaSeleccionada.idmesa, id, $scope.totalDineroMesaSeleccionada).then(function(success) {
+                            UsuarioServicio.cambiarEstadoMesa($scope.mesaSeleccionada.idmesa).then(function(success) {
+                                UsuarioServicio.cerrarMesa($scope.mesaSeleccionada.idmesa).then(function(success) {
+                                    $scope.hideModal();
+                                    $state.go('app.mesas', { reload: true })
+                                })
+                            })
+                        })
+                    } else {
+                        console.log('You are not sure');
+                    }
+                });;
+            }
+            //utilsService.hideModal()
+        $scope.hideModal = function() { $scope.modal.hide() }
+
+    })
+    .controller('MesaCtrl', function($scope, modalPersonalService, modalFacturarService, $rootScope, $state, $stateParams, $ionicModal, $ionicPopup, $ionicHistory, UsuarioServicio) {
         //$scope.modalPersonalService = modalPersonalService
         $scope.modal.listaBebidasMesaTMP = []
         $scope.mesaSeleccionada = $rootScope.mesaSeleccionada;
+        $scope.modalFacturarService = modalFacturarService
+        $scope.goFacturar = function() { $scope.modalFacturarService.showModal() }
         $scope.nPersonaMesaValue = 1;
         UsuarioServicio.obtenerBebidasMesa($scope.mesaSeleccionada.idmesa).then(function(success) { $scope.resumenBebidaMesaSeleccionada = success })
         $scope.resumenBebidaMesa = function() {
@@ -202,10 +240,21 @@ angular.module('starter.controllers', ['starter.services'])
         })
 
         UsuarioServicio.obtenerTotalDineroMesa($scope.mesaSeleccionada.idmesa).then(function(success) {
-            //console.log($scope.nPersonaMesaValue + "-" + success[0].total)
+            console.log($scope.nPersonaMesaValue + "-" + success[0].total)
             $scope.totalDineroMesaSeleccionada = success[0].total
             $scope.totalDineroMesaSeleccionadaPersona = success[0].total / $scope.nPersonaMesaValue;
+            $rootScope.totalDineroMesaSeleccionada = $scope.totalDineroMesaSeleccionadaPersona / $scope.nPersonaMesaValue
+            console.log("$rootScope.totalDineroMesaSeleccionada" + $rootScope.totalDineroMesaSeleccionada)
+
         })
+
+        $scope.nPersonaMesaValueActualizada = function(n) {
+
+            if (n.nPersonaMesaValue == "") $rootScope.totalDineroMesaSeleccionada = $scope.totalDineroMesaSeleccionadaPersona
+
+            $rootScope.totalDineroMesaSeleccionada = $scope.totalDineroMesaSeleccionadaPersona / n.nPersonaMesaValue
+            console.log("$rootScope.nPersonaMesaValueActualizada" + $rootScope.totalDineroMesaSeleccionada)
+        }
         $scope.totalDineroMesaSeleccionadaPersona = $scope.totalDineroMesaSeleccionada / $scope.nPersonaMesaValue;
         UsuarioServicio.obtenerCategoriasBebidas().then(function(success) {
             ////console.log("listaBebidas" + success)
@@ -251,13 +300,13 @@ angular.module('starter.controllers', ['starter.services'])
         }
 
 
-        $scope.addBebidaMesa = function() {
-            $ionicModal.fromTemplateUrl('templates/bebidas.html', {
-                scope: $scope
-            }).then(function(modal) {
-                $scope.modal = modal;
-            });
-        }
+        /* $scope.addBebidaMesa = function() {
+             $ionicModal.fromTemplateUrl('templates/dd.html', {
+                 scope: $scope
+             }).then(function(modal) {
+                 $scope.modal = modal;
+             });
+         }*/
 
         // Triggered in the login modal to close it
         $scope.modal.closeLogin = function() {
@@ -267,6 +316,7 @@ angular.module('starter.controllers', ['starter.services'])
                     UsuarioServicio.obtenerBebidasMesa($scope.mesaSeleccionada.idmesa).then(function(success) {
                         ////console.log("-+" + success)
                         $scope.listaBebidasMesa = success;
+                        //$scope.nPersonaMesaValueActualizada();
                     })
 
                 })
@@ -274,6 +324,7 @@ angular.module('starter.controllers', ['starter.services'])
             }, this);
             $scope.modal.hide();
             $scope.modal.listaBebidasMesaTMP = []
+            $state.go('app.mesas', { reload: true })
         };
 
         // Open the login modal
@@ -288,9 +339,9 @@ angular.module('starter.controllers', ['starter.services'])
 
             // Simulate a login delay. Remove this and replace with your login
             // code if using a login system
-            $timeout(function() {
-                $scope.closeLogin();
-            }, 1000);
+            //$timeout(function() {
+            $scope.closeLogin();
+            //}, 1000);
         };
         $scope.goBack = function() { $ionicHistory.goBack(); }
     })
@@ -360,7 +411,22 @@ angular.module('starter.controllers', ['starter.services'])
             $state.go('app.admin', { reload: true })
         });
     }
+    UsuarioServicio.obtenerMesaPagos().then(function(success) { $scope.listaMesasPago = success })
+    $scope.cerrarTurno = function() {
+        UsuarioServicio.obtenerMesasAbiertas().then(function(success) {
+            console.log(success)
+            if (success[0].total == 0) {
+                UsuarioServicio.cerrarTurno().then(function(success) {
+                    $ionicPopup.alert({ title: "Cerrar turno", template: "Well " + $scope.listaMesasPago[0].total_turno + " dones" });
+                    //$state.go('app.admin')
+                })
+            } else if (success[0].total >= 1) {
+                $ionicPopup.alert({ title: "Cerrar turno", template: "Hay mesas abiertas" });
+                //$state.go('app.mesas')
+            } else if (angular.isUndefined(success[0].total)) $ionicPopup.alert({ title: "Cerrar turno", template: "Hay habido un error" });
+        })
 
+    }
     $scope.zonaGuardar = function() {
         UsuarioServicio.addZonaPersonal($scope.nZonaData.Nombre).then(function(success) {
             $scope.nZonaData.Nombre = "";

@@ -44,16 +44,17 @@
                             <ion-item ng-repeat="item in modal.listaBebidasMesaTMP">
                                 <div class="row">
                                     <div class="col">
-                                        <h4>{{item.nombre}}</h4>
+                                        <h2>{{item.nombre}}</h2>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col"><button class="button button-assertive icon ion-minus-circled" ng-click="item.cantidad= item.cantidad-1"></button></div>
+                                    <div class="col" ng-if="item.cantidad>0"><button class="button button-assertive icon ion-minus-circled" ng-click="item.cantidad= item.cantidad-1"></button></div>
+
                                     <div class="col">
                                         <div class="item text-input" value="{{item.idbebida}}" name="cBebida" ng-model="item.cantidad">{{item.cantidad}}</div>
                                     </div>
                                     <div class="col"><button class="button button-balanced  icon ion-plus-circled" ng-click="item.cantidad= item.cantidad+1"></button></div>
-                                    <div class="col"> <button class="button button-positive  icon ion-checkmark-circled" ng-click="registrarPerfil()"></button></div>
+                                    <!--<div class="col"> <button class="button button-positive  icon ion-checkmark-circled" ng-click="registrarPerfil()"></button></div>-->
                                 </div>
                                 <div class="row">
                                 </div>

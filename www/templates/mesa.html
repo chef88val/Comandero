@@ -2,20 +2,32 @@
     <ion-nav-buttons side="left">
         <button class="button button-icon button-clear ion-chevron-left" ng-click="goBack()"></button>
     </ion-nav-buttons>
+    <!-- <ion-nav-buttons side="right">
+        <button class="button button-icon button-clear ion-clipboard" ng-click="resumenBebidaMesa()"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="primary">
+        <button class="button button-icon button-clear ion-eject" ng-click=""></button>
+    </ion-nav-buttons>-->
+    <ion-nav-buttons side="secondary">
+        <button class="button button-icon button-clear ion-eject" ng-click="goFacturar()"></button>
+    </ion-nav-buttons>
+
     <ion-content>
         <div class="card">
             <div class="item item-divider">
                 <h1> {{mesaSeleccionada.referencia}}</h1>
             </div>
             <div class="item item-text-wrap">
-                <p>Total:{{totalDineroMesaSeleccionada}}€-<input id="nPersonaMesaValue" ng-model="nPersonaMesaValue" />-{{totalDineroMesaSeleccionada/nPersonaMesaValue}}€/pax</p>
+                <p>Total:{{totalDineroMesaSeleccionada}}€/ <input id="nPersonaMesaValue" value="n" ng-change="nPersonaMesaValueActualizada(this)" ng-model="nPersonaMesaValue" /></p>
+                <span ng-if="totalDineroMesaSeleccionada/nPersonaMesaValue!='Infinity'">{{totalDineroMesaSeleccionada/nPersonaMesaValue}}€/ pax</span>
+                <p ng-if="totalDineroMesaSeleccionada/nPersonaMesaValue=='Infinity'"></p>
 
             </div>
         </div>
         <div class="card">
-            <div class="item item-divider" ng-click="resumenBebidaMesa()">
+            <div class="item item-divider">
 
-                <span> Bebida </span> <i class="icon ion-share"></i>
+                <span> Bebida </span> <i class="icon ion-share" ng-click="resumenBebidaMesa()"></i>
             </div>
             <div class="item item-text-wrap">
                 <ion-scroll style="height: 370px">
@@ -27,13 +39,13 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col"><button class="button button-assertive icon ion-minus-circled" ng-click="count= count-1"></button></div>
+                                <div class="col" ng-if="item.count>0"><button class="button button-assertive icon ion-minus-circled" ng-click="item.count= item.count-1"></button></div>
                                 <div class="col">
                                     {{item.cantidad}}
-                                    <div class="item text-input" value="" name="cBebida" ng-model="contador">{{count}}</div>
+                                    <div ng-if="item.count>0" class="item text-input" value="" name="cBebida" ng-model="contador">{{item.count}}</div>
                                 </div>
-                                <div class="col"><button class="button button-balanced  icon ion-plus-circled" ng-click="count= count+1"></button></div>
-                                <div class="col"> <button class="button button-positive  icon ion-checkmark-circled" ng-click="actualizarBebida(item.idbebida,count)"></button></div>
+                                <div class="col"><button class="button button-balanced  icon ion-plus-circled" ng-click="item.count= item.count+1"></button></div>
+                                <div class="col"> <button class="button button-positive  icon ion-checkmark-circled" ng-click="actualizarBebida(item.idbebida,item.count)"></button></div>
                             </div>
                             <div class="row">
                             </div>

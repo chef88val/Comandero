@@ -1,0 +1,61 @@
+<ion-modal-view cache-view="false" ng-controller="modalFacturarCtrl">
+    <!-- <ion-header-bar>
+        <h1 class="title">Login</h1>
+        <div class="buttons">
+            <button class="button button-clear" ng-click="closeLogin()">Close</button>
+        </div>
+    </ion-header-bar>-->
+    <ion-content>
+        <div class="card">
+            <div class="item item-divider">
+                Facturar {{mesaSeleccionada.referencia}}
+            </div>
+            <div class="item item-text-wrap">
+                <div class="row">
+                    <h1>Total: <span>{{totalDineroMesaSeleccionada}}</span>€</h1>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <ion-scroll style="height: 170px">
+                            <ion-list>
+                                <ion-item ng-repeat="item in metodosPago" class="" ng-click="pagoSeleccionada(item.nombre)">
+                                    {{item.nombre}}
+                                </ion-item>
+                            </ion-list>
+                        </ion-scroll>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="card" ng-show="metodoPago=='Efectivo'">
+            <div class="item item-divider">
+                Efectivo
+            </div>
+            <div class="item item-text-wrap">
+                <div class="row">
+
+                </div>
+            </div>
+        </div>
+        <div class="card" ng-show="metodoPago=='Tarjeta'">
+            <div class="item item-divider">
+                Tarjeta
+            </div>
+            <div class="item item-text-wrap">
+                <div class="row">
+
+                </div>
+            </div>
+        </div>
+    </ion-content>
+    <ion-footer-bar align-title="center" class="bar-assertive">
+        <!--<div class="buttons">
+            <button class="button"></button>
+        </div>-->
+        <div class="title" ng-click="hideModal()">Cerrar</div>
+        <!--<div class="buttons" ng-click="doSomething()">
+            <button class="button">Right Button</button>
+        </div>-->
+    </ion-footer-bar>
+</ion-modal-view>

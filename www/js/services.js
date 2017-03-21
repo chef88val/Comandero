@@ -2,7 +2,7 @@
 
 /* Services */
 
-angular.module('starter.services', ['ionic'])
+angular.module('starter.services', ['ionic', 'ionic-notification-bar'])
 
 .factory('$localstorage', ['$window', function($window) {
         return {
@@ -20,16 +20,20 @@ angular.module('starter.services', ['ionic'])
             }
         }
     }])
-    .service('UsuarioServicio', ['$http', '$rootScope', '$ionicPopup', '$state', function($http, $rootScope, $ionicPopup, $state) {
+    .service('UsuarioServicio', ['$http', '$rootScope', '$ionicPopup', '$state', '$notificationBar', '$ionicLoading', function($http, $rootScope, $ionicPopup, $state, $notificationBar, $ionicLoading) {
         //var patron = 'http://' + $rootScope.ipServidor + ':' + $rootScope.portServidor;
         //console.log("UsuarioServicio$rootScope.ipServidor" + $rootScope.ipServidor)
 
         var patron = 'http://192.168.1.132:5000'; // + $rootScope.portServidor;
+        var servicio = this;
         return {
             obtenerConexion: function() {
+                //
+                //console.log(servicio.obtenerConexion())
                 return $http.get($rootScope.patron + '/obtenerConexion').then(valorOK, valorNOK2("No hay conexion con el servidor<br><hr>IP no valida", "Error de conexion"));
             },
             obtenerBebidas: function() {
+
                 return $http.get($rootScope.patron + '/obtenerBebidas').then(valorOK, valorNOK("obtenerBebidas-No se han obtenido todos los datos", "Error de conexion"));
             },
             obtenerCategoriasBebidas: function() {
@@ -42,7 +46,8 @@ angular.module('starter.services', ['ionic'])
                 return $http.get($rootScope.patron + '/obtenerBebidasMesa/' + id).then(valorOK, valorNOK("obtenerBebidasMesa-No se han obtenido todos los datos", "Error de conexion"));
             },
             obtenerMesas: function() {
-                return $http.get($rootScope.patron + '/obtenerMesas').then(valorOK, valorNOK("obtenerMesas-No se han obtenido todos los datos", "Error de conexion"));
+                if (this.obtenerConexion())
+                    return $http.get($rootScope.patron + '/obtenerMesas').then(valorOK, valorNOK("obtenerMesas-No se han obtenido todos los datos", "Error de conexion"));
             },
             obtenerTotalDineroMesa: function(idmesa) {
                 return $http.get($rootScope.patron + '/obtenerTotalDineroMesa/' + idmesa).then(valorOK, valorNOK("obtenerTotalDineroMesa-No se han obtenido todos los datos", "Error de conexion"));
@@ -61,6 +66,12 @@ angular.module('starter.services', ['ionic'])
             },
             abrirMesa: function(idmesa) {
                 return $http.put($rootScope.patron + '/camarero/abrirMesa/' + idmesa).then(valorOK, valorNOK("1-No se han obtenido todos los datos", "Error de conexion"));
+            },
+            cambiarEstadoMesa: function(referencia) {
+                return $http.put($rootScope.patron + '/camarero/cambiarEstadoMesa/' + referencia).then(valorOK, valorNOK("1-No se han obtenido todos los datos", "Error de conexion"));
+            },
+            addPagoMesa: function(referencia, tipo, cantidad) {
+                return $http.post($rootScope.patron + '/camarero/addPagoMesa/' + referencia + '/' + tipo + '/' + cantidad).then(valorOK, valorNOK("1-No se han obtenido todos los datos", "Error de conexion"));
             },
             cerrarMesa: function(idmesa) {
                 return $http.put($rootScope.patron + '/camarero/cerrarMesa/' + idmesa).then(valorOK, valorNOK("1-No se han obtenido todos los datos", "Error de conexion"));
@@ -95,9 +106,6 @@ angular.module('starter.services', ['ionic'])
             addMesaPax: function(referencia, pax) {
                 return $http.post($rootScope.patron + '/admin/addMesaPax/' + referencia + '/' + pax).then(valorOK, valorNOK("1-No se han obtenido todos los datos", "Error de conexion"));
             },
-            cambiarEstadoMesa: function(referencia) {
-                return $http.put($rootScope.patron + '/admin/cambiarPrecioMesa/' + referencia).then(valorOK, valorNOK("1-No se han obtenido todos los datos", "Error de conexion"));
-            },
             deleteMesa: function(referencia) {
                 return $http.post($rootScope.patron + '/admin/deleteMesa/' + referencia).then(valorOK, valorNOK("1-No se han obtenido todos los datos", "Error de conexion"));
             },
@@ -115,6 +123,12 @@ angular.module('starter.services', ['ionic'])
             },
             obtenerPersonal: function() {
                 return $http.get($rootScope.patron + '/admin/obtenerPersonal/').then(valorOK, valorNOK("1-No se han obtenido todos los datos", "Error de conexion"));
+            },
+            obtenerMesaPagos: function() {
+                return $http.get($rootScope.patron + '/admin/obtenerMesaPagos/').then(valorOK, valorNOK("1-No se han obtenido todos los datos", "Error de conexion"));
+            },
+            obtenerMesasAbiertas: function() {
+                return $http.get($rootScope.patron + '/admin/obtenerMesasAbiertas/').then(valorOK, valorNOK("1-No se han obtenido todos los datos", "Error de conexion"));
             },
             obtenerPersonalHoras: function(id) {
                 return $http.get($rootScope.patron + '/admin/obtenerPersonalHoras/' + id).then(valorOK, valorNOK("1-No se han obtenido todos los datos", "Error de conexion"));
@@ -160,6 +174,9 @@ angular.module('starter.services', ['ionic'])
             },
             getCategoria: function() {
                 return $http.get($rootScope.patron + '/admin/getCategoria/').then(valorOK, valorNOK("1-No se han obtenido todos los datos", "Error de conexion"));
+            },
+            cerrarTurno: function() {
+                return $http.post($rootScope.patron + '/admin/cerrarTurno/').then(valorOK, valorNOK("1-No se han obtenido todos los datos", "Error de conexion"));
             },
             buscarporID: function(array, key, value) {
                 //console.log(array + key + value)
@@ -244,14 +261,38 @@ angular.module('starter.services', ['ionic'])
 
         function valorOK(res) {
             //DevExpress.ui.dialog.alert("OK","Conexión realizada"); 
+            //$notificationBar.timer = 1000;
+            //str.replace("http://192.168.1.19:5000/", "")
+            $ionicLoading.show({
+                content: 'Loading',
+                animation: 'fade-in',
+                showBackdrop: true,
+                maxWidth: 200,
+                showDelay: 0
+            });
+
             $rootScope.statusServicio = true;
-            console.log("res.data" + res.data);
+            let str = res.config.url
+            if (res.status == 200) {
+                $ionicLoading.hide();
+                $notificationBar.show("OK", $notificationBar.SUCCESS);
+            }
             return res.data;
         }
+        /* function valorOK(res, titulo) {
+            //DevExpress.ui.dialog.alert("OK","Conexión realizada"); 
+            //$notificationBar.timer = 1000;
+            $notificationBar.show(titulo, $notificationBar.SUCCESS);
+            console.log(res)
+            $rootScope.statusServicio = true;
+            //console.log("res.data" + res.data);
+            return res;
+        }*/
 
         function valorNOK(error, tituloerror) {
             return function() {
-                $ionicPopup.alert({ template: error, title: tituloerror });
+                $notificationBar.show('No se han aplciado los cambios', $notificationBar.ALERT);
+                //$ionicPopup.alert({ template: error, title: tituloerror });
                 $rootScope.statusServicio = false;
             }
 
@@ -260,6 +301,7 @@ angular.module('starter.services', ['ionic'])
 
         function valorNOK2(error, tituloerror) {
             return function() {
+                $notificationBar.show('No se haconectado con el servidor', $notificationBar.ALERT);
                 $ionicPopup.alert({ template: error, title: tituloerror });
                 $rootScope.statusServicio = false;
                 $state.go('app.ajustes', { reload: true })
@@ -347,6 +389,24 @@ angular.module('starter.services', ['ionic'])
             $ionicModal.fromTemplateUrl('templates/bebidas.html', {
                 scope: null,
                 controller: 'modalBebidaCtrl'
+            }).then(function(modal) {
+                service.modal = modal;
+                service.modal.show();
+            });
+        };
+
+        this.hideModal = function() {
+            this.modal.hide();
+        };
+    })
+    .service('modalFacturarService', function($ionicModal) {
+        this.showModal = function() {
+
+            var service = this;
+
+            $ionicModal.fromTemplateUrl('templates/facturar.html', {
+                scope: null,
+                controller: 'modalFacturarCtrl'
             }).then(function(modal) {
                 service.modal = modal;
                 service.modal.show();

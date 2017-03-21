@@ -1,5 +1,7 @@
 <ion-view view-title="Administrador">
+
     <ion-content>
+
         <!--<h1 ng-if="administradorActivo || rootActivo">administradorActivo</h1>
         <h1 ng-if="rootActivo">rootActivo</h1>-->
         <div class="card">
@@ -97,5 +99,25 @@
                     <button class="button button-full button-positive" ng-click="mesaGuardar()">Guardar mesa</button>
                 </div>
             </div>
+            <div class="card">
+                <div class="item item-divider">
+                    Cerrar caja
+                </div>
+                <div class="item item-text-wrap">
+                    <ion-scroll style="height: 170px">
+                        <ion-list>
+                            <ion-item ng-repeat="item in listaMesasPago" class="" ng-click="pagoSeleccionada(item.nombre)">
+                                <span ng-if="item.tipopago=='Efectivo'">{{item.total_turno}}<i class="icon ion-cash"></i> {{item.referencia}}</span>
+                                <span ng-if="item.tipopago=='Tarjeta'">{{item.total_turno}}<i class="icon ion-card"></i> {{item.referencia}}</span>
+                            </ion-item>
+                        </ion-list>
+                    </ion-scroll>
+                </div>
+                <div class="item item-divider">
+                    <button class="button button-full button-positive" ng-click="cerrarTurno()">Cerrar turno</button>
+                </div>
+            </div>
+
     </ion-content>
+
 </ion-view>
