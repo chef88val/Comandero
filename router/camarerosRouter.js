@@ -6,6 +6,17 @@ router.put('/abrirMesa/:mesa', function(req, res) {
         res.send(data);
     });
 })
+router.put('/cambiarEstadoMesa/:mesa', function(req, res) {
+    modelo_camarero.cambiarEstadoMesa(req.params.mesa, function(err, data) {
+        res.send(data);
+    });
+})
+
+router.post('/addPagoMesa/:mesa/:tipo/:cantidad', function(req, res) {
+    modelo_camarero.addPagoMesa(req.params.mesa, req.params.tipo, req.params.cantidad, function(err, data) {
+        res.send(data);
+    });
+})
 router.put('/cerrarMesa/:mesa', function(req, res) {
     modelo_camarero.cerrarMesa(req.params.mesa, function(err, data) {
         res.send(data);

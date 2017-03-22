@@ -18,7 +18,7 @@ conn.connect(function(err) {
 
 var request = conn
 
-Admin.getCategoriaBebida = function(nombre, callback) {
+Admin.addCategoriaBebida = function(nombre, callback) {
     //console.log('Insert into categoria_bebida(nombre_categoria) values("' + nombre + '")')
     request.query('Insert into categoria_bebida(nombre_categoria) values("' + nombre + '")', function(err, recordset) {
         if (err) callback(err)
@@ -40,9 +40,16 @@ Admin.deleteCategoriaBebida = function(nombre, callback) {
     });
 }
 
-Admin.insertarBebida = function(nombre, precio, categoria, callback) {
+Admin.addBebida = function(nombre, precio, categoria, callback) {
     //console.log('Insert into bebida(nombre, precio,categoria) values("' + nombre + '","' + precio + '",' + categoria + ')');
     request.query('Insert into bebida(nombre, precio,categoria) values("' + nombre + '","' + precio + '",' + categoria + ')', function(err, recordset) {
+        if (err) callback(err)
+        else callback(null, true)
+    });
+}
+Admin.updateBebida = function(nombre, precio, categoria, callback) {
+    console.log('update bebida set categoria=' + categoria + ', precio="' + precio + '"where idbebida=' + nombre);
+    request.query('update bebida set categoria=' + categoria + ', precio="' + precio + '"where idbebida=' + nombre, function(err, recordset) {
         if (err) callback(err)
         else callback(null, true)
     });
@@ -72,7 +79,7 @@ Admin.borrarBebida = function(nombre, callback) {
 }
 
 
-Admin.getCategoriaPlato = function(nombre, callback) {
+Admin.addCategoriaPlato = function(nombre, callback) {
     //console.log('Insert into categoria_plato(nombre_categoria) values("' + nombre + '")')
     request.query('Insert into categoria_plato(nombre_categoria) values("' + nombre + '")', function(err, recordset) {
         if (err) callback(err)
@@ -143,6 +150,27 @@ Admin.cambiarEstadoMesa = function(nombre, callback) {
     //console.log('update mesa set estado = estado XOR 1 where where idmesa= ' + nombre)
     request.query('update mesa set estado = estado XOR 1 where where idmesa= ' + nombre, function(err, recordset) {
         if (err) callback(err)
+        else callback(null, true)
+    });
+}
+
+Admin.obtenerMesaPagos = function(callback) {
+    request.query('SELECT *, sum(cantidad) as total,mt.idmesa as total_turno FROM mesa_turno mt, mesa m where mt.idmesa= m.idmesa group by mt.idmesa;', function(err, recordset) {
+        if (err) callback(err, false)
+        else callback(null, recordset)
+    });
+}
+
+Admin.obtenerMesasAbiertas = function(callback) {
+    request.query('SELECT count(*) as total FROM mesa where estado=1', function(err, recordset) {
+        if (err) callback(err, false)
+        else callback(null, recordset)
+    });
+}
+
+Admin.cerrarTurno = function(callback) {
+    request.query('truncate mesa_turno', function(err, recordset) {
+        if (err) callback(err, false)
         else callback(null, true)
     });
 }

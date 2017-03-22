@@ -96,9 +96,25 @@ app.get('/obtenerBebidasCategorias/:id', function(req, res) {
 app.get('/obtenerBebidasMesa/:id', function(req, res) {
     modelo_camarero.obtenerBebidasMesa(req.params.id, function(err, data) { res.send(data) })
 })
+app.get('/obtenerPlatos', function(req, res) {
+    modelo_camarero.obtenerPlatos(function(err, data) { res.send(data) })
+})
 
+app.get('/obtenerCategoriasPlatos', function(req, res) {
+    modelo_camarero.obtenerCategoriasPlatos(function(err, data) { res.send(data) })
+})
+
+app.get('/obtenerPlatosCategorias/:id', function(req, res) {
+    modelo_camarero.obtenerPlatosCategorias(req.params.id, function(err, data) { res.send(data) })
+})
+
+app.get('/obtenerPlatosMesa/:id', function(req, res) {
+    modelo_camarero.obtenerPlatosMesa(req.params.id, function(err, data) { res.send(data) })
+})
 app.get('/obtenerTotalDineroMesa/:id', function(req, res) {
-    modelo_camarero.obtenerTotalDineroMesa(req.params.id, function(err, data) { res.send(data) })
+    modelo_camarero.obtenerTotalDineroMesa(req.params.id, function(err, data) {
+        res.send(data)
+    })
 })
 
 app.get('/obtenerMesas', function(req, res) {

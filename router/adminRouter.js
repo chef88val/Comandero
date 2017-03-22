@@ -35,7 +35,12 @@ router.post('/addCategoriaBebida/:nombre', function(req, res) {
 })
 
 router.post('/addBebida/:nombre/:precio/:categoria', function(req, res) {
-    modelo_admin.insertarBebida(req.params.nombre, req.params.precio, req.params.categoria, function(err, data) {
+    modelo_admin.addBebida(req.params.nombre, req.params.precio, req.params.categoria, function(err, data) {
+        res.send(data);
+    });
+})
+router.put('/updateBebida/:nombre/:precio/:categoria', function(req, res) {
+    modelo_admin.updateBebida(req.params.nombre, req.params.precio, req.params.categoria, function(err, data) {
         res.send(data);
     });
 })
@@ -108,6 +113,23 @@ router.post('/addMesaPax/:mesa/:pax', function(req, res) {
 
 router.post('/deleteMesa/:mesa', function(req, res) {
     modelo_admin.borrarMesa(req.params.mesa, function(err, data) {
+        res.send(data);
+    });
+})
+
+router.get('/obtenerMesaPagos', function(req, res) {
+    modelo_admin.obtenerMesaPagos(function(err, data) {
+        res.send(data);
+    });
+})
+router.get('/obtenerMesasAbiertas', function(req, res) {
+    modelo_admin.obtenerMesasAbiertas(function(err, data) {
+        res.send(data);
+    });
+})
+
+router.post('/cerrarTurno', function(req, res) {
+    modelo_admin.cerrarTurno(function(err, data) {
         res.send(data);
     });
 })
