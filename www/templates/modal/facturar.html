@@ -19,7 +19,7 @@
                         <ion-scroll style="height: 170px">
                             <ion-list>
                                 <ion-item ng-repeat="item in metodosPago" class="" ng-click="pagoSeleccionada(item.nombre)">
-                                    {{item.nombre}}
+                                    <i class="icon {{item.icon}}"></i><span class="pago">{{item.nombre}}</span>
                                 </ion-item>
                             </ion-list>
                         </ion-scroll>
@@ -30,7 +30,7 @@
         </div>
         <div class="card" ng-show="metodoPago=='Efectivo'">
             <div class="item item-divider">
-                Efectivo
+                <i class="icon ion-cash"></i>Efectivo
             </div>
             <div class="item item-text-wrap">
                 <div class="row">

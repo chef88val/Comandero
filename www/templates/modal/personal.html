@@ -1,4 +1,4 @@
-<ion-modal-view cache-view="false">
+<ion-modal-view cache-view="false" ng-controller="modalPersonalCtrl">
     <!-- <ion-header-bar>
         <h1 class="title">Login</h1>
         <div class="buttons">
@@ -7,16 +7,19 @@
     </ion-header-bar>-->
     <ion-content>
         <div class="card">
-            <div class="item item-divider">
-                CAT
+            <div class="item item-divider ok" ng-if="accionPersonal==1">
+                Zonas
+            </div>
+            <div class="item item-divider nok" ng-if="accionPersonal==2">
+                Zonas
             </div>
             <div class="item item-text-wrap">
                 <div class="row">
                     <div class="col">
                         <ion-scroll style="height: 170px">
                             <ion-list>
-                                <ion-item ng-repeat="item in modal.listaCategorias" class="categoriaSeleccionada" ng-click="modal.categoriaSeleccionada(item.idcategoria_bebida)">
-                                    {{item.nombre_categoria}}
+                                <ion-item ng-repeat="item in listaZonas" class="categoriaSeleccionada" ng-click="zonaSeleccionada(item.idcategoria_zona)">
+                                    {{item.nombre_zona}}
                                 </ion-item>
                             </ion-list>
                         </ion-scroll>
@@ -24,8 +27,8 @@
                     <div class="col">
                         <ion-scroll style="height: 200px">
                             <ion-list>
-                                <ion-item ng-repeat="item in modal.listaBebidas" ng-click="modal.bebidaSeleccionada(item.idbebida)">
-                                    {{item.nombre}}
+                                <ion-item ng-repeat="item in listaPersonal" ng-click="personalSeleccionada(item.idpersonal)">
+                                    {{item.Nombre}}
                                 </ion-item>
                             </ion-list>
                         </ion-scroll>
@@ -34,29 +37,29 @@
             </div>
         </div>
         <div class="card">
-            <div class="item item-divider">
-                Bebidas
+            <div class="item item-divider ok" ng-if="accionPersonal==1">
+                Lista de entrada/ salida
+            </div>
+            <div class="item item-divider nok" ng-if="accionPersonal==2">
+                Lista de entrada/ salida
             </div>
             <div class="item item-text-wrap">
                 <div class="row">
                     <ion-scroll style="height: 200px">
                         <ion-list>
-                            <ion-item ng-repeat="item in modal.listaBebidasMesaTMP">
+                            <ion-item ng-repeat="item in listaPersonalTMP">
                                 <div class="row">
                                     <div class="col">
-                                        <h2>{{item.nombre}}</h2>
+                                        <div class="ok" ng-if="accionPersonal==1">
+                                            {{item.nombre}}
+                                        </div>
+                                        <div class="" ng-if="accionPersonal==0">
+                                            {{item.nombre}}
+                                        </div>
+                                        <div class="nok" ng-if="accionPersonal==2">
+                                            {{item.nombre}}
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col" ng-if="item.cantidad>0"><button class="button button-assertive icon ion-minus-circled" ng-click="item.cantidad= item.cantidad-1"></button></div>
-
-                                    <div class="col">
-                                        <div class="item text-input" value="{{item.idbebida}}" name="cBebida" ng-model="item.cantidad">{{item.cantidad}}</div>
-                                    </div>
-                                    <div class="col"><button class="button button-balanced  icon ion-plus-circled" ng-click="item.cantidad= item.cantidad+1"></button></div>
-                                    <!--<div class="col"> <button class="button button-positive  icon ion-checkmark-circled" ng-click="registrarPerfil()"></button></div>-->
-                                </div>
-                                <div class="row">
                                 </div>
                             </ion-item>
                         </ion-list>
@@ -69,7 +72,7 @@
         <!--<div class="buttons">
             <button class="button"></button>
         </div>-->
-        <div class="title" ng-click="modal.closeLogin()">Añadir todo</div>
+        <div class="title" ng-click="hideModal()">Añadir todo</div>
         <!--<div class="buttons" ng-click="doSomething()">
             <button class="button">Right Button</button>
         </div>-->

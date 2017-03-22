@@ -5,119 +5,173 @@
         <!--<h1 ng-if="administradorActivo || rootActivo">administradorActivo</h1>
         <h1 ng-if="rootActivo">rootActivo</h1>-->
         <div class="card">
-            <div class="item item-divider">
+            <div class="item item-divider" ng-click="mostrarPersonal()">
                 Gestionar entradas/ salidas
             </div>
-            <div class="item item-text-wrap">
+            <div class="item item-text-wrap" ng-if="mostrarPersonalValue">
                 <button class="button button-full button-block button-balanced" ng-click="accionPersonal(1)">  Entrar personal</button>
                 <button class="button button-full button-outline button-balanced" ng-click="accionPersonal(10)">  Listado personal</button>
                 <button class="button button-full button-block button-stable" ng-click="accionPersonal(20)">  Listado personal</button>
                 <button class="button button-full button-outline button-assertive" ng-click="accionPersonal(30)">  Listado personal</button>
-                <button class="button button-full button-block button-assertive" ng-click="accionPersonal(2)">  Sacar Button</button>
+                <button class="button button-full button-block button-assertive" ng-click="accionPersonal(2)">  Sacar personal</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="item item-divider" ng-click="mostrarBebidaCategoria()">
+                Añadir categoria bebida
+            </div>
+            <div class="item item-text-wrap" ng-if="mostrarBebidaCategoriaValue">
+                <span>Nombre categoria:</span>
+                <input type="text" placeholder="Nombre categoria" value="nombreCategoriaBebida" name="nombreCategoriaBebida" ng-model="nCategoriaBebidaData.Nombre">
+            </div>
+            <div class="item item-divider" ng-if="mostrarBebidaCategoriaValue">
+                <button class="button button-full button-positive" ng-click="categoriaBebidaGuardar()">Guardar categoria de bebida</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="item item-divider" ng-click="mostrarBebidaAdd()">
+                Añadir bebida
+            </div>
+            <div class="item item-text-wrap" ng-if="mostrarBebidaAddValue">
+                <span>Nombre bebida:</span>
+                <input type="text" placeholder="Nombre" value="nombreBebida" name="nombreBebida" ng-model="nBebidaData.Nombre">
+                <select value="nombreCategoriaBebida" name="nombreCategoriaBebida" ng-model="nBebidaData.Categoria">
+                  <option value="{{item.idcategoria_bebida}}" ng-repeat="item in listaCategoriasBebida">{{item.nombre_categoria}}</option>
+                </select>
+                <input type="text" value="nombrePrecio" name="nombrePrecio" ng-model="nBebidaData.Precio" placeholder="Precio">
+            </div>
+            <div class="item item-divider" ng-if="mostrarBebidaAddValue">
+                <button class="button button-full button-positive" ng-click="bebidaGuardar()">Guardar bebida</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="item item-divider" ng-click="mostrarBebidaActualizar()">
+                Actualizar bebida
+            </div>
+            <div class="item item-text-wrap" ng-if="mostrarBebidaActualizarValue">
+
+                <select value="nombreBebida" name="nombreBebida" ng-change="bebidaSeleccionadaActualizar()" ng-model="nBebidaDataActualizar.Nombre">
+                  <option value="{{item.idbebida}}" ng-repeat="item in listaBebidas">{{item.nombre}}</option>
+                </select>
+                <select value="nombreCategoriaBebida" name="nombreCategoriaBebida" ng-model="nBebidaDataActualizar.Categoria">
+                  <option value="{{item.idcategoria_bebida}}" ng-selected="CategoriabebidaSeleccionadaActualizar()"   ng-repeat="item in listaCategoriasBebida">{{item.nombre_categoria}}</option>
+                </select>
+                <input type="text" value="nombrePrecioActualizar" name="nombrePrecioActualizar" ng-model="nBebidaDataActualizar.Precio" placeholder="Precio">
+            </div>
+            <div class="item item-divider" ng-if="mostrarBebidaActualizarValue">
+                <button class="button button-full button-positive" ng-click="bebidaActualizar()">Actualizar bebida</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="item item-divider" ng-click="mostrarPlatoCategoria()">
+                Añadir categoria plato
+            </div>
+            <div class="item item-text-wrap" ng-if="mostrarPlatoCategoriaValue">
+                <span>Nombre categoria:</span>
+                <input type="text" placeholder="Nombre categoria" value="nombreCategoriaPlato" name="nombreCategoriaPlato" ng-model="nCategoriaPlatoData.Nombre">
+            </div>
+            <div class="item item-divider" ng-if="mostrarPlatoCategoriaValue">
+                <button class="button button-full button-positive" ng-click="categoriaPlatoGuardar()">Guardar categoria de plato</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="item item-divider" ng-click="mostrarPlatoAdd()">
+                Añadir plato
+            </div>
+            <div class="item item-text-wrap" ng-if="mostrarPlatoAddValue">
+                <span>Nombre plato:</span>
+                <input type="text" placeholder="Nombre" value="nombrePlato" name="nombrePlato" ng-model="nPlatoData.Nombre">
+                <select value="nombreCategoriaPlato" name="nombreCategoriaPlato" ng-model="nPlatoData.Categoria">
+                  <option value="{{item.idcategoria_plato}}" ng-repeat="item in listaCategoriasPlato">{{item.nombre_categoria}}</option>
+                </select>
+                <input type="text" value="nombrePrecio" name="nombrePrecio" ng-model="nPlatoData.Precio" placeholder="Precio">
+            </div>
+            <div class="item item-divider" ng-if="mostrarPlatoAddValue">
+                <button class="button button-full button-positive" ng-click="platoGuardar()">Guardar plato</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="item item-divider" ng-click="mostrarPlatoActualizar()">
+                Actualizar plato
+            </div>
+            <div class="item item-text-wrap" ng-if="mostrarPlatoActualizarValue">
+
+                <select value="nombrePlato" name="nombrePlato" ng-change="platoSeleccionadaActualizar()" ng-model="nPlatoDataActualizar.Nombre">
+                  <option value="{{item.idplato}}" ng-repeat="item in listaPlatos">{{item.nombre}}</option>
+                </select>
+                <select value="nombreCategoriaPlato" name="nombreCategoriaPlato" ng-model="nPlatoDataActualizar.Categoria">
+                  <option value="{{item.idcategoria_plato}}" ng-selected="CategoriaplatoSeleccionadaActualizar()"   ng-repeat="item in listaCategoriasPlato">{{item.nombre_categoria}}</option>
+                </select>
+                <input type="text" value="nombrePrecioActualizar" name="nombrePrecioActualizar" ng-model="nPlatoDataActualizar.Precio" placeholder="Precio">
+            </div>
+            <div class="item item-divider" ng-if="mostrarPlatoActualizarValue">
+                <button class="button button-full button-positive" ng-click="platoActualizar()">Actualizar plato</button>
             </div>
         </div>
         <div class="card">
-            <div class="item item-divider">
+            <div class="item item-divider" ng-click="mostrarMesaAdd()">
+                Añadir mesa
+            </div>
+            <div class="item item-text-wrap" ng-if="mostrarMesaAddValue">
+                <span>Nombre mesa:</span>
+                <input type="text" placeholder="Nombre" value="nombreMesa" name="nombreMesa" ng-model="nMesaData.Nombre">
+            </div>
+            <div class="item item-divider" ng-if="mostrarMesaAddValue">
+                <button class="button button-full button-positive" ng-click="mesaGuardar()">Guardar mesa</button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="item item-divider" ng-click="mostrarCerrarCaja()">
+                Cerrar caja
+            </div>
+            <div class="item item-text-wrap" ng-if="mostrarCerrarCajaValue">
+                <ion-scroll style="height: 170px">
+                    <ion-list>
+                        <ion-item ng-repeat="item in listaMesasPago" class="pago" ng-click="pagoSeleccionada(item.referencia)">
+                            <span ng-if="item.tipopago=='Efectivo'">{{item.referencia}} <i class="icon ion-cash"></i> {{item.total}}€ </span>
+                            <span ng-if="item.tipopago=='Tarjeta'">{{item.referencia}} <i class="icon ion-card"></i> {{item.total}}€ </span>
+                        </ion-item>
+                    </ion-list>
+                </ion-scroll>
+            </div>
+            <div class="item item-divider" ng-if="mostrarCerrarCajaValue">
+                <button class="button button-full button-positive" ng-click="cerrarTurno()">Cerrar turno</button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="item item-divider" ng-click="mostrarPersonalAddZona()">
+                Añadir zona
+            </div>
+            <div class="item item-text-wrap" ng-if="mostrarPersonalAddZonaValue">
+                <span>Nombre zona:</span>
+                <input type="text" placeholder="Nombre zona" value="nombreZona" name="nombreZona" ng-model="nZonaData.Nombre">
+            </div>
+            <div class="item item-divider" ng-if="mostrarPersonalAddZonaValue">
+                <button class="button button-full button-positive" ng-click="zonaGuardar()">Guardar zona</button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="item item-divider" ng-click="mostrarPersonalHoras()">
                 Gestionar horas
             </div>
-            <div class="item item-text-wrap">
+            <div class="item item-text-wrap" ng-if="mostrarPersonalHorasValue">
                 <div class="item item-text-wrap">
                     <span>Trabajador:</span>
                     <select value="nombreCategoria" name="nombreCategoria" ng-model="trabajadorHoras.id">
                         <option value="{{item.idpersonal}}" ng-repeat="item in obtenerPersonal">{{item.Nombre}}
                     </select>
                 </div>
-                <div class="item item-divider">
+                <div class="item item-divider" ng-if="mostrarPersonalHorasValue">
                     <button class="button button-full button-positive" ng-click="trabajadorCalcularHoras()">Total horas</button>
                 </div>
             </div>
-            <div class="card">
-                <div class="item item-divider">
-                    Añadir categoria bebida
-                </div>
-                <div class="item item-text-wrap">
-                    <span>Nombre categoria:</span>
-                    <input type="text" placeholder="Nombre categoria" value="nombreCategoria" name="nombreCategoria" ng-model="nCategoriaData.Nombre">
-                </div>
-                <div class="item item-divider">
-                    <button class="button button-full button-positive" ng-click="categoriaGuardar()">Guardar categoria de bebida</button>
-                </div>
-            </div>
-            <div class="card">
-                <div class="item item-divider">
-                    Añadir zona
-                </div>
-                <div class="item item-text-wrap">
-                    <span>Nombre zona:</span>
-                    <input type="text" placeholder="Nombre zona" value="nombreZona" name="nombreZona" ng-model="nZonaData.Nombre">
-                </div>
-                <div class="item item-divider">
-                    <button class="button button-full button-positive" ng-click="zonaGuardar()">Guardar zona</button>
-                </div>
-            </div>
-            <div class="card">
-                <div class="item item-divider">
-                    Añadir bebida
-                </div>
-                <div class="item item-text-wrap">
-                    <span>Nombre bebida:</span>
-                    <input type="text" placeholder="Nombre" value="nombreBebida" name="nombreBebida" ng-model="nBebidaData.Nombre">
-                    <select value="nombreCategoria" name="nombreCategoria" ng-model="nBebidaData.Categoria">
-                  <option value="{{item.idcategoria_bebida}}" ng-repeat="item in listaCategorias">{{item.nombre_categoria}}</option>
-                </select>
-                    <input type="text" value="nombrePrecio" name="nombrePrecio" ng-model="nBebidaData.Precio" placeholder="Precio">
-                </div>
-                <div class="item item-divider">
-                    <button class="button button-full button-positive" ng-click="bebidaGuardar()">Guardar bebida</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="item item-divider">
-                    Actualizar bebida
-                </div>
-                <div class="item item-text-wrap">
-                    <span>Nombre bebida:</span>
-                    <select value="nombreCategoria" name="nombreCategoria" ng-model="nBebidaDataActualizar.Categoria">
-                  <option value="{{item.idbebida}}" ng-repeat="item in listaBebidas">{{item.nombre}}</option>
-                </select>
-                    <input type="text" value="nombrePrecioActualizar" name="nombrePrecioActualizar" ng-model="nBebidaDataActualizar.Precio" placeholder="Precio">
-                </div>
-                <div class="item item-divider">
-                    <button class="button button-full button-positive" ng-click="bebidaActualizar()">Actualizar bebida</button>
-                </div>
-            </div>
-            <div class="card">
-                <div class="item item-divider">
-                    Añadir mesa
-                </div>
-                <div class="item item-text-wrap">
-                    <span>Nombre mesa:</span>
-                    <input type="text" placeholder="Nombre" value="nombreMesa" name="nombreMesa" ng-model="nMesaData.Nombre">
-                </div>
-                <div class="item item-divider">
-                    <button class="button button-full button-positive" ng-click="mesaGuardar()">Guardar mesa</button>
-                </div>
-            </div>
-            <div class="card">
-                <div class="item item-divider">
-                    Cerrar caja
-                </div>
-                <div class="item item-text-wrap">
-                    <ion-scroll style="height: 170px">
-                        <ion-list>
-                            <ion-item ng-repeat="item in listaMesasPago" class="" ng-click="pagoSeleccionada(item.nombre)">
-                                <span ng-if="item.tipopago=='Efectivo'">{{item.total_turno}}<i class="icon ion-cash"></i> {{item.referencia}}</span>
-                                <span ng-if="item.tipopago=='Tarjeta'">{{item.total_turno}}<i class="icon ion-card"></i> {{item.referencia}}</span>
-                            </ion-item>
-                        </ion-list>
-                    </ion-scroll>
-                </div>
-                <div class="item item-divider">
-                    <button class="button button-full button-positive" ng-click="cerrarTurno()">Cerrar turno</button>
-                </div>
-            </div>
-
+        </div>
     </ion-content>
 
 </ion-view>

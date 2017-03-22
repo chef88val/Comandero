@@ -1,4 +1,4 @@
-<ion-modal-view cache-view="false" ng-controller="modalPersonalCtrl">
+<ion-modal-view cache-view="false" ng-controller="modalBebidaCtrl">
     <!-- <ion-header-bar>
         <h1 class="title">Login</h1>
         <div class="buttons">
@@ -8,15 +8,15 @@
     <ion-content>
         <div class="card">
             <div class="item item-divider">
-                Zonas
+                Categorias
             </div>
             <div class="item item-text-wrap">
                 <div class="row">
                     <div class="col">
                         <ion-scroll style="height: 170px">
                             <ion-list>
-                                <ion-item ng-repeat="item in listaZonas" class="categoriaSeleccionada" ng-click="zonaSeleccionada(item.idcategoria_zona)">
-                                    {{item.nombre_zona}}
+                                <ion-item ng-repeat="item in listaCategorias" class="categoriaSeleccionada" ng-click="categoriaSeleccionada(item.idcategoria_bebida)">
+                                    {{item.nombre_categoria}}
                                 </ion-item>
                             </ion-list>
                         </ion-scroll>
@@ -24,8 +24,8 @@
                     <div class="col">
                         <ion-scroll style="height: 200px">
                             <ion-list>
-                                <ion-item ng-repeat="item in listaPersonal" ng-click="personalSeleccionada(item.idpersonal)">
-                                    {{item.Nombre}}
+                                <ion-item ng-repeat="item in listaBebidas" ng-click="bebidaSeleccionada(item.idbebida)">
+                                    {{item.nombre}}
                                 </ion-item>
                             </ion-list>
                         </ion-scroll>
@@ -35,25 +35,28 @@
         </div>
         <div class="card">
             <div class="item item-divider">
-                Lista de entrada/ salida
+                Bebidas
             </div>
             <div class="item item-text-wrap">
                 <div class="row">
                     <ion-scroll style="height: 200px">
                         <ion-list>
-                            <ion-item ng-repeat="item in listaPersonalTMP">
+                            <ion-item ng-repeat="item in listaBebidasMesaTMP">
                                 <div class="row">
                                     <div class="col">
-                                        <div class="ok" ng-if="accionPersonal==1">
-                                            {{item.nombre}}
-                                        </div>
-                                        <div class="" ng-if="accionPersonal==0">
-                                            {{item.nombre}}
-                                        </div>
-                                        <div class="nok" ng-if="accionPersonal==2">
-                                            {{item.nombre}}
-                                        </div>
+                                        <h2>{{item.nombre}}</h2>
                                     </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col" ng-if="item.cantidad>0"><button class="button button-assertive icon ion-minus-circled" ng-click="item.cantidad= item.cantidad-1"></button></div>
+
+                                    <div class="col">
+                                        <div class="item text-input" value="{{item.idbebida}}" name="cBebida" ng-model="item.cantidad">{{item.cantidad}}</div>
+                                    </div>
+                                    <div class="col"><button class="button button-balanced  icon ion-plus-circled" ng-click="item.cantidad= item.cantidad+1"></button></div>
+                                    <!--<div class="col"> <button class="button button-positive  icon ion-checkmark-circled" ng-click="registrarPerfil()"></button></div>-->
+                                </div>
+                                <div class="row">
                                 </div>
                             </ion-item>
                         </ion-list>

@@ -14,10 +14,10 @@
 
     <ion-content>
         <div class="card">
-            <div class="item item-divider">
+            <div class="item item-divider" ng-click="mostrarDetalle()">
                 <h1> {{mesaSeleccionada.referencia}}</h1>
             </div>
-            <div class="item item-text-wrap">
+            <div class="item item-text-wrap" ng-if="mostrarDetalleValue">
                 <p>Total:{{totalDineroMesaSeleccionada}}€/ <input id="nPersonaMesaValue" value="n" ng-change="nPersonaMesaValueActualizada(this)" ng-model="nPersonaMesaValue" /></p>
                 <span ng-if="totalDineroMesaSeleccionada/nPersonaMesaValue!='Infinity'">{{totalDineroMesaSeleccionada/nPersonaMesaValue}}€/ pax</span>
                 <p ng-if="totalDineroMesaSeleccionada/nPersonaMesaValue=='Infinity'"></p>
@@ -25,11 +25,19 @@
             </div>
         </div>
         <div class="card">
-            <div class="item item-divider">
-
-                <span> Bebida </span> <i class="icon ion-share" ng-click="resumenBebidaMesa()"></i>
+            <div class="item item-divider" ng-click="mostrarBebida()">
+                Bebida <i class="icon ion-share" ng-click="resumenBebidaMesa()"></i>
             </div>
-            <div class="item item-text-wrap">
+            <div class="item item-text-wrap" ng-if="mostrarBebidaValue">
+                <ion-footer-bar align-title="center" class="bar-balanced">
+                    <!--<div class="buttons">
+            <button class="button"></button>
+        </div>-->
+                    <div class="title" ng-click="addBebida()">Añadir</div>
+                    <!--<div class="buttons" ng-click="doSomething()">
+            <button class="button">Right Button</button>
+        </div>-->
+                </ion-footer-bar>
                 <ion-scroll style="height: 370px">
                     <ion-list>
                         <ion-item ng-repeat="item in listaBebidasMesa">
@@ -54,14 +62,44 @@
                 </ion-scroll>
             </div>
         </div>
-    </ion-content>
-    <ion-footer-bar align-title="center" class="bar-balanced">
-        <!--<div class="buttons">
+        <div class="card">
+            <div class="item item-divider" ng-click="mostrarPlato()">
+                Plato <i class="icon ion-share" ng-click="resumenPlatoMesa()"></i>
+            </div>
+            <div class="item item-text-wrap" ng-if="mostrarPlatoValue">
+                <ion-footer-bar align-title="center" class="bar-balanced">
+                    <!--<div class="buttons">
             <button class="button"></button>
         </div>-->
-        <div class="title" ng-click="modal.show()">Añadir</div>
-        <!--<div class="buttons" ng-click="doSomething()">
+                    <div class="title" ng-click="addPlato()">Añadir</div>
+                    <!--<div class="buttons" ng-click="doSomething()">
             <button class="button">Right Button</button>
         </div>-->
-    </ion-footer-bar>
+                </ion-footer-bar>
+                <ion-scroll style="height: 370px">
+                    <ion-list>
+                        <ion-item ng-repeat="item in listaPlatosMesa">
+                            <div class="row">
+                                <div class="col">
+                                    <h2>{{item.nombre}}</h2>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col" ng-if="item.count>0"><button class="button button-assertive icon ion-minus-circled" ng-click="item.count= item.count-1"></button></div>
+                                <div class="col">
+                                    {{item.cantidad}}
+                                    <div ng-if="item.count>0" class="item text-input" value="" name="cPlato" ng-model="contador">{{item.count}}</div>
+                                </div>
+                                <div class="col"><button class="button button-balanced  icon ion-plus-circled" ng-click="item.count= item.count+1"></button></div>
+                                <div class="col"> <button class="button button-positive  icon ion-checkmark-circled" ng-click="actualizarPlato(item.idPlato,item.count)"></button></div>
+                            </div>
+                            <div class="row">
+                            </div>
+                        </ion-item>
+                    </ion-list>
+                </ion-scroll>
+            </div>
+        </div>
+    </ion-content>
+
 </ion-view>

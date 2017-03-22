@@ -56,9 +56,18 @@ ion-item.categoriaSeleccionada.item:focus {
 
 i.icon.ion-share {
     float: right;
+}
+
+i.icon {
     font-size: 30px
 }
 
 .card>.item>span {
     font-size: 30px;
+}
+
+ion-item>span.pago {
+    /* color: red; */
+    font-size: 30px;
+    margin-left: 20px;
 }
