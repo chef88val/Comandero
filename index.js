@@ -41,25 +41,28 @@ var mailData = {
     html: '<b>Hello world ?</b>'
 }
 
-var modelo_alertas = require('./models/alertas')
-var modelo_usuario = require('./models/usuarios')
-var modelo_comentarios = require('./models/comentarios')
-var modelo_chat = require('./models/chat')
+//var modelo_alertas = require('./models/alertas')
+//var modelo_usuario = require('./models/usuarios')
+//var modelo_comentarios = require('./models/comentarios')
+//var modelo_chat = require('./models/chat')
 var modelo_camarero = require('./models/camarero')
 
 // instanciamos router
 var adminRouter = require('./router/adminRouter')
 
 var bebidasRouter = require('./router/bebidasRouter')
+var platosRouter = require('./router/platosRouter')
 var camarerosRouter = require('./router/camarerosRouter')
+var adminUsersRouter = require('./router/admin/adminUsersRouter')
 
 var ipRoot = []
-app.use('/admin', adminRouter)
-
-// aplicamos las rutas a nuestra aplicación, app
+    //app.use('/admin', adminRouter)
+    //app.use('/admin/users', adminUsersRouter)
+    // aplicamos las rutas a nuestra aplicación, app
 app.use('/admin', adminRouter)
 app.use('/camarero', camarerosRouter)
 app.use('/bebida', bebidasRouter)
+app.use('/plato', platosRouter)
 
 app.get('/root', function(req, res) {
     app._router.stack.forEach(function(r) {
@@ -68,8 +71,11 @@ app.get('/root', function(req, res) {
 
     })
     expressListRoutes({ prefix: '/admin' }, 'adminRouter:', adminRouter);
+    expressListRoutes({ prefix: '/admin/users' }, 'adminUsersRouter:', adminUsersRouter);
     expressListRoutes({ prefix: '/bebida' }, 'bebidasRouter:', bebidasRouter);
+    expressListRoutes({ prefix: '/plato' }, 'platosRouter:', platosRouter);
     expressListRoutes({ prefix: '/camarero' }, 'camarerosRouter:', camarerosRouter);
+    res.send(true)
 })
 
 app.get('/obtenerConexion', function(req, res) {

@@ -19,21 +19,21 @@ conn.connect(function(err) {
 var request = conn
 
 Camarero.obtenerBebidas = function(callback) {
-    request.query('select * from bebida', function(err, recordset) {
+    request.query('select * from bebida order by nombre', function(err, recordset) {
         if (err) callback(err)
         else callback(null, recordset)
     })
 }
 
 Camarero.obtenerCategoriasBebidas = function(callback) {
-    request.query('select * from categoria_bebida', function(err, recordset) {
+    request.query('select * from categoria_bebida order by nombre_categoria', function(err, recordset) {
         if (err) callback(err)
         else callback(null, recordset)
     })
 }
 
 Camarero.obtenerBebidasCategorias = function(id, callback) {
-    request.query('select * from bebida where categoria=' + id, function(err, recordset) {
+    request.query('select * from bebida where categoria=' + id + 'order by nombre', function(err, recordset) {
         if (err) callback(err)
         else callback(null, recordset)
     })
@@ -47,14 +47,14 @@ Camarero.obtenerBebidasMesa = function(id, callback) {
 }
 
 Camarero.obtenerMesas = function(callback) {
-    request.query('select * from mesa', function(err, recordset) {
+    request.query('select * from mesa order by estado desc', function(err, recordset) {
         if (err) callback(err)
         else callback(null, recordset)
     })
 }
 
 Camarero.obtenerMesasEstado = function(estado, callback) {
-    request.query('select referencia from mesa where estado=' + estado, function(err, recordset) {
+    request.query('select referencia from mesa where estado=' + estado + 'order by estado desc', function(err, recordset) {
         if (err) callback(err)
         else callback(null, recordset)
     })

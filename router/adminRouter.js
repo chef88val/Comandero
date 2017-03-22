@@ -1,10 +1,14 @@
 var express = require('express');
 var modelo_admin = require('../models/admin')
+var app = express()
+var usersRouter = require('./admin/adminUsersRouter')
+app.use('/users', usersRouter)
 var router = express.Router();
-router.get('/', function(req, res) {
-    res.send('¡Soy el panel de administración!');
+router.get('/users', function(req, res) {
+    console.log("/admin/users")
+    app.use(usersRouter)
 });
-
+/*
 //users page (http://localhost:1337/admin/users)
 router.get('/users', function(req, res) {
     res.send('¡Muestro todos los usuarios!');
@@ -12,25 +16,20 @@ router.get('/users', function(req, res) {
 //ruta con parámetros (http://localhost:1337/admin/users/:name)
 router.get('/users/:name', function(req, res) {
     res.send('hola ' + req.params.name + '!');
-});
+});*/
 router.get('/adminLogin/:clave', function(req, res) {
     if (req.params.clave == "4444") { res.send("admin") } else if (req.params.clave == "5555") { res.send("root") } else if (req.params.clave != "5555" || (req.params.clave != "4444")) res.send("false")
 })
 
-router.post('/addCategoria/:nombre', function(req, res) {
-    modelo_admin.addCategoria(req.params.nombre, function(err, data) {
+
+router.get('/getCategoriaBebida/', function(req, res) {
+    modelo_admin.getCategoriaBebida(function(err, data) {
         res.send(data);
     });
 })
 
-router.get('/getCategoria/', function(req, res) {
-    modelo_admin.getCategoria(function(err, data) {
-        res.send(data);
-    });
-})
-
-router.post('/addCategoria/:nombre', function(req, res) {
-    modelo_admin.addCategoria(req.params.nombre, function(err, data) {
+router.post('/addCategoriaBebida/:nombre', function(req, res) {
+    modelo_admin.addCategoriaBebida(req.params.nombre, function(err, data) {
         res.send(data);
     });
 })
@@ -55,6 +54,42 @@ router.put('/cambiarPrecioBebida/:nombre/:precio', function(req, res) {
 
 router.post('/deleteBebida/:nombre', function(req, res) {
     modelo_admin.borrarBebida(req.params.nombre, function(err, data) {
+        res.send(data);
+    });
+})
+
+router.get('/getCategoriaPlato/', function(req, res) {
+    modelo_admin.getCategoriaPlato(function(err, data) {
+        res.send(data);
+    });
+})
+
+router.post('/addCategoriaPlato/:nombre', function(req, res) {
+    modelo_admin.addCategoriaPlato(req.params.nombre, function(err, data) {
+        res.send(data);
+    });
+})
+
+router.post('/addPlato/:nombre/:precio/:categoria', function(req, res) {
+    modelo_admin.insertarPlato(req.params.nombre, req.params.precio, req.params.categoria, function(err, data) {
+        res.send(data);
+    });
+})
+
+router.put('/cambiarCategoriaPlato/:nombre/:categoria', function(req, res) {
+    modelo_admin.cambiarCategoriaPlato(req.params.nombre, req.params.categoria, function(err, data) {
+        res.send(data);
+    });
+})
+
+router.put('/cambiarPrecioPlato/:nombre/:precio', function(req, res) {
+    modelo_admin.cambiarPrecioPlato(req.params.nombre, req.params.precio, function(err, data) {
+        res.send(data);
+    });
+})
+
+router.post('/deletePlato/:nombre', function(req, res) {
+    modelo_admin.borrarPlato(req.params.nombre, function(err, data) {
         res.send(data);
     });
 })

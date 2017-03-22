@@ -18,21 +18,21 @@ conn.connect(function(err) {
 
 var request = conn
 
-Admin.addCategoria = function(nombre, callback) {
+Admin.getCategoriaBebida = function(nombre, callback) {
     //console.log('Insert into categoria_bebida(nombre_categoria) values("' + nombre + '")')
     request.query('Insert into categoria_bebida(nombre_categoria) values("' + nombre + '")', function(err, recordset) {
         if (err) callback(err)
         else callback(null, true)
     });
 }
-Admin.getCategoria = function(callback) {
+Admin.getCategoriaBebida = function(callback) {
     //console.log('Insert into categoria_bebida(nombre_categoria) values("' + nombre + '")')
-    request.query('select * from categoria_bebida', function(err, recordset) {
+    request.query('select * from categoria_bebida order by nombre_categoria', function(err, recordset) {
         if (err) callback(err)
         else callback(null, recordset)
     });
 }
-Admin.deleteCategoria = function(nombre, callback) {
+Admin.deleteCategoriaBebida = function(nombre, callback) {
     //console.log('Insert into categoria_bebida(nombre_categoria) values("' + nombre + '")')
     request.query('delete from categoria_bebida where idcategoria_bebida=' + nombre, function(err, recordset) {
         if (err) callback(err)
@@ -66,6 +66,60 @@ Admin.cambiarPrecioBebida = function(nombre, precio, callback) {
 
 Admin.borrarBebida = function(nombre, callback) {
     request.query('delete from bebida where where idbebida= ' + nombre, function(err, recordset) {
+        if (err) callback(err)
+        else callback(null, true)
+    });
+}
+
+
+Admin.getCategoriaPlato = function(nombre, callback) {
+    //console.log('Insert into categoria_plato(nombre_categoria) values("' + nombre + '")')
+    request.query('Insert into categoria_plato(nombre_categoria) values("' + nombre + '")', function(err, recordset) {
+        if (err) callback(err)
+        else callback(null, true)
+    });
+}
+Admin.getCategoriaPlato = function(callback) {
+    //console.log('Insert into categoria_plato(nombre_categoria) values("' + nombre + '")')
+    request.query('select * from categoria_plato order by nombre_categoria', function(err, recordset) {
+        if (err) callback(err)
+        else callback(null, recordset)
+    });
+}
+Admin.deleteCategoriaPlato = function(nombre, callback) {
+    //console.log('Insert into categoria_plato(nombre_categoria) values("' + nombre + '")')
+    request.query('delete from categoria_plato where idcategoria_plato=' + nombre, function(err, recordset) {
+        if (err) callback(err)
+        else callback(null, true)
+    });
+}
+
+Admin.insertarPlato = function(nombre, precio, categoria, callback) {
+    //console.log('Insert into plato(nombre, precio,categoria) values("' + nombre + '","' + precio + '",' + categoria + ')');
+    request.query('Insert into plato(nombre, precio,categoria) values("' + nombre + '","' + precio + '",' + categoria + ')', function(err, recordset) {
+        if (err) callback(err)
+        else callback(null, true)
+    });
+}
+
+Admin.cambiarCategoriaPlato = function(nombre, categoria, callback) {
+    //console.log('update plato set precio = "'+precio+'" XOR 1 where referencia like "' + nombre + '"')
+    request.query('update plato set categoria = ' + categoria + ' where idplato= ' + nombre, function(err, recordset) {
+        if (err) callback(err)
+        else callback(null, true)
+    });
+}
+
+Admin.cambiarPrecioPlato = function(nombre, precio, callback) {
+    //console.log('update plato set precio = "' + precio + '" where idplato= ' + nombre)
+    request.query('update plato set precio = "' + precio + '" where idplato= ' + nombre, function(err, recordset) {
+        if (err) callback(err)
+        else callback(null, true)
+    });
+}
+
+Admin.borrarPlato = function(nombre, callback) {
+    request.query('delete from plato where where idplato= ' + nombre, function(err, recordset) {
         if (err) callback(err)
         else callback(null, true)
     });
@@ -126,7 +180,7 @@ Admin.deleteZonaPersonal = function(id, callback) {
 
 Admin.obtenerZonas = function(callback) {
     //console.log('insert into personal(nombre, zona, cargo) values("' + nombre + '","' + zona + '","' + cargo + '")')
-    request.query('select * from categoria_zona', function(err, recordset) {
+    request.query('select * from categoria_zona order by nombre_zona', function(err, recordset) {
         if (err) callback(err)
         else callback(null, recordset)
     });
@@ -150,7 +204,7 @@ Admin.obtenerPersonalParado = function(callback) {
 
 Admin.obtenerPersonal = function(callback) {
     //console.log('insert into personal(nombre, zona, cargo) values("' + nombre + '","' + zona + '","' + cargo + '")')
-    request.query('select * from personal', function(err, recordset) {
+    request.query('select * from personal order by Nombre', function(err, recordset) {
         if (err) callback(err)
         else callback(null, recordset)
     });
