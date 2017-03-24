@@ -1,7 +1,6 @@
 var fs = require('fs')
-    //var path = require('path')
-    //var gcm = require('node-gcm')
 
+var path = require('path');
 var express = require('express')
 var expressListRoutes = require('express-list-routes');
 var app = express()
@@ -14,7 +13,9 @@ var btoa = require('btoa')
 var atob = require('atob')
 var ip = require('ip')
 var dateFormat = require('dateformat')
-var nodemailer = require('nodemailer')
+    //var nodemailer = require('nodemailer')
+    //var email_sender = nodemailer.createTransport('smtps://jsm.multimedia%40gmail.com:BlackWater@smtp.gmail.com')
+
 var utilidades = require('./funciones_extras')
 var cors = require('cors')
 app.use(cors())
@@ -22,15 +23,15 @@ app.use(cors())
 var date = new Date()
 var EventEmitter = require('events').EventEmitter
 var eventExample = new EventEmitter
-
+app.use(express.static(path.join(__dirname, 'public')));
 // Create our Express router
 var router = express.Router()
-var email_sender = nodemailer.createTransport('smtps://jsm.multimedia%40gmail.com:BlackWater@smtp.gmail.com')
 var host = ip.address()
 var port = 5000
 server.listen(port, host, function() {
     console.log('running at http://' + host + ':' + port)
     console.log('Server is running.')
+
 })
 
 var mailData = {
@@ -41,10 +42,6 @@ var mailData = {
     html: '<b>Hello world ?</b>'
 }
 
-//var modelo_alertas = require('./models/alertas')
-//var modelo_usuario = require('./models/usuarios')
-//var modelo_comentarios = require('./models/comentarios')
-//var modelo_chat = require('./models/chat')
 var modelo_camarero = require('./models/camarero')
 
 // instanciamos router
@@ -125,8 +122,182 @@ app.get('/obtenerMesasEstado/:estado', function(req, res) {
     modelo_camarero.obtenerMesasEstado(req.params.estado, function(err, data) { res.send(data) })
 })
 
+var printer = require("printer"),
+    util = require('util');
+app.get('/printerdefault', function(req, res) {
+    console.log('default printer name: ' + (printer.getDefaultPrinterName() || 'is not defined on your computer'));
+    console.log("supported formats are:\n" + util.inspect(printer.getSupportedPrintFormats(), { colors: true, depth: 10 }));
+    console.log("supported job commands:\n" + util.inspect(printer.getSupportedJobCommands(), { colors: true, depth: 10 }));
+
+    //console.log("installed printers:\n" + util.inspect(printer.getPrinters(), { colors: true, depth: 10 }));
+    res.send(true)
+})
+app.get('/printerdriver', function(req, res) {
+    printers = printer.getPrinters();
+
+    printers.forEach(function(iPrinter, i) {
+        console.log('' + i + 'ppd for printer "' + iPrinter.name + '":' + util.inspect(printer.getPrinterDriverOptions(iPrinter.name), { colors: true, depth: 10 }));
+        console.log('\tselected page size:' + printer.getSelectedPaperSize(iPrinter.name) + '\n');
+    });
+})
+app.get('/print', function(res, res) {
+    printer.printDirect({
+        data: "print from Node.JS buffer" // or simple String: "some text"
+            //, printer:'Foxit Reader PDF Printer' // printer name, if missing then will print to default printer
+            ,
+        printer: printer.getDefaultPrinterName(),
+        type: 'TEXT' // type: RAW, TEXT, PDF, JPEG, .. depends on platform
+            ,
+        success: function(jobID) {
+            console.log("sent to printer with ID: " + jobID);
+        },
+        error: function(err) { console.log(err); }
+    });
+})
+
+app.get('/printers', function(req, res) {
+        //console.log('default printer name: ' + (printer.getDefaultPrinterName() || 'is not defined on your computer'));
+        console.log("installed printers:\n" + util.inspect(printer.getPrinters(), { colors: true, depth: 10 }));
+        res.send(true)
+    })
+    /*
+    var escpos = require('escposify');
+    var device = new escpos.USB();
+    var printer = new escpos.Printer(device);*/
+var ipp = require('ipp');
+var printer2 = ipp.Printer("http://192.168.1.38:631/ipp/printer");
+/*var mdns = require('mdns'),
+    browser = mdns.createBrowser(mdns.tcp('ipp'));
+
+browser.on('serviceUp', function(rec) {
+    console.log(rec.name, 'http://' + rec.host + ':' + rec.port + '/' + rec.txtRecord.rp);
+});
+browser.start();*/
+
+app.get('/IdentifyPrinter', function(req, res) {
+    var msg = {
+        "operation-attributes-tag": {
+            "requesting-user-name": "William",
+            "message": "These are not the droids you are looking for"
+        }
+    };
+
+    printer2.execute("Identify-Printer", msg, function(err, res) {
+        console.log(res);
+    });
+})
+
+app.get('/printURI', function(req, res) {
+    var msg = {
+        "operation-attributes-tag": {
+            "requesting-user-name": "William",
+            "job-name": "My Test Job",
+            "document-format": "application/text",
+            "document-uri": "./plantilla.js"
+        }
+    };
+    printer2.execute("Print-URI", msg, function(err, res) {
+        console.log(res);
+    });
+})
+
+//doc.table(products, tableOptions);
+var jsreport = require('jsreport');
+
+var buffers = [];
+app.get('/printDoc', function(req, res) {
+    var printer = ipp.Printer("http://gorka-notebook.local.:631/printers/MFC-L2700D-2");
+
+    jsreport.render({
+        template: {
+            content: '<b>Hello world</b><img style="margin-left: 35%" src="http://' + host + ':' + port + '/images/llorer.png" />',
+            engine: 'jsrender',
+            recipe: 'phantom-pdf',
+            phantom: {
+                header: "<p style='text-align:center'>Ticket de mesa</p>",
+                orientation: "portrait",
+                width: "300px"
+            }
+        }
+    }).then(function(out) {
+        out.stream.pipe(res);
+        console.log(out.content)
+        console.log("out.content")
+        buffers = out.content
+        console.log(buffers)
+        var file = {
+            "operation-attributes-tag": {
+                "requesting-user-name": "User",
+                "job-name": "Print Job",
+                "document-format": "application/pdf"
+            },
+            data: Buffer.concat([buffers])
+        };
+        console.log("data" + file.data)
+
+        //console.log(data)
+        /*printer.execute("Print-Job", file, function(err, res) {
+            console.log("Printed: " + res.statusCode);
+        });*/
+    }).catch(function(e) {
+        res.end(e.message);
+    });
+
+
+
+    /*doc.on('data', buffers.push.bind(buffers));
+    doc.on('end', function() {
+        var printer = ipp.Printer("http://gorka-notebook.local.:631/printers/MFC-L2700D-2");
+        var file = {
+            "operation-attributes-tag": {
+                "requesting-user-name": "User",
+                "job-name": "Print Job",
+                "document-format": "application/pdf"
+            },
+            data: Buffer.concat(buffers)
+        };*/
+
+    /*printer.execute("Print-Job", file, function(err, res) {
+        console.log("Printed: " + res.statusCode);
+    });*/
+
+    //}); 
+    //doc.write("salida-1.pdf");
+
+    //doc.end();
+
+})
+app.get('/getJobs', function(req, res) {
+        var msg = {
+            "operation-attributes-tag": {
+                //use these to view completed jobs...
+                //			"limit": 10,
+                //			"which-jobs": "completed"
+            }
+        }
+
+        printer2.execute("Get-Jobs", msg, function(err, res) {
+            console.log(res);
+        });
+    })
+    /*
+    var serialport = require('serialport');
+    var SerialPort = serialport.SerialPort;
+
+    // list serial ports:
+    serialport.list(function(err, ports) {
+        ports.forEach(function(port) {
+            console.log(port.comName);
+        });
+    });
+    var myPort = new SerialPort(portName, {
+        baudRate: 9600,
+        // look for return and newline at the end of each data packet:
+        parser: serialport.parsers.readline("\n")
+    });*/
+
 app.use(function(req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', host + ':3000')
+    res.setHeader('Access-Control-Allow-Origin', host + ':' + port)
 
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE')

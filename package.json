@@ -17,12 +17,13 @@
     "dateformat": "^2.0.0",
     "express": "^4.14.0",
     "express-list-routes": "^0.1.4",
-    "express-session": "^1.14.2",
     "fs": "0.0.1-security",
     "ip": "^1.1.4",
+    "ipp": "^1.1.0",
+    "jsreport": "^1.5.1",
     "mysql": "^2.13.0",
-    "nodemailer": "^2.7.0",
     "nodemon": "^1.11.0",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "printer": "^0.2.2"
   }
 }

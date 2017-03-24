@@ -1,0 +1,121 @@
+var PDFDocument = require("pdfkit");
+var fontkit = require("fontkit");
+//var font = fontkit.openSync('font.ttf');
+
+var doc = new PDFDocument;
+
+
+//example for table options
+var tableOptions = {
+    width: 100, // other units should be allowed.
+    // If not specified then (page width - left page margin - right page margin)
+    margins: { top: 10 },
+    padding: { left: 10 },
+    columns: [
+        { width: 20 }, // 20 %. other possibilities for widthare '20pt', '14px', '10cm', '1in'
+        { margins: { top: 10 } }, // auto calculated column width if space remained
+        {}
+    ],
+    font: "Times-Roman",
+    boldFont: "Times-Roman"
+
+    //other options
+};
+
+//console.log(fs.openSync());
+//example for table row options:
+
+
+//cellOptions accept row options plus:
+//text, textColor, textAlign, textVAlign, font, colSpan, etc
+/*doc.table(function() {
+    //doc.font('fonts/PalatinoBold.ttf')
+    doc.tableHeaderRow(); // the same as tableRow but may auto repeat header on page break
+    doc.tableRow(rowOptions); // internal code should allow the page to break
+    doc.tableRow(rowOptions, function() {
+        doc.tableCell('text');
+    });
+}, tableOptions);*/
+//doc.registerFont('Heading Font', 'fonts/Chalkboard.ttc', 'Chalkboard-Bold')
+doc.font('Times-Roman')
+    .fontSize(25)
+    .text('Some text with an embedded font!', 100, 100)
+
+
+doc.addPage()
+    .fontSize(25)
+    .text('Here is some vector graphics...', 100, 100)
+
+//doc.mixin('tables')
+doc.image('images/llorer.jpg', 320, 145, {
+    width: 200,
+    height: 100,
+    align: 'center'
+});
+doc.fontSize(25)
+    .text('Here is some vector graphics...', 100, 80);
+var products = [
+    { description: '0001', quantity: 'Black table', unitCost: '10', total: '$ 19.20' },
+    { code: '0005', name: 'White table', quantity: '8', price: '$ 19.20' },
+    { code: '0012', name: 'Red chair', quantity: '40', price: '$ 12.00' }
+]
+var rowOptions = {
+    columns: [
+        { description: '0001', quantity: 'Black table', unitCost: '10', total: '$ 19.20' }
+
+    ],
+    boldFont: "Times-Roman"
+};
+
+var tableOptions = {
+    columns: [{
+            id: 'description',
+            width: 15,
+            name: 'Nº'
+        },
+        {
+            id: 'quantity',
+            width: 10,
+            name: 'x'
+        },
+        {
+            id: 'unitCost',
+            width: 15,
+            name: '€'
+        },
+        {
+            id: 'discount',
+            width: 10,
+            name: '%'
+        },
+        {
+            id: 'total',
+            width: 20,
+            name: 'Total'
+        }
+    ],
+    y: 250,
+    noVerticalLines: true,
+    margins: {
+        left: 40,
+        top: 0,
+        right: 40,
+        bottom: 20
+    },
+    padding: {
+        left: 10,
+        top: 10,
+        right: 10,
+        bottom: 10
+    },
+    boldFont: "Times-Roman"
+};
+/*
+doc.table({
+    columns: [
+        { description: '0001', quantity: 'Black table', unitCost: '10', total: '$ 19.20' }
+
+    ]
+}, tableOptions);*/
+doc.text("Hello World", 100, 300)
+    .font('Times-Roman', 13);
