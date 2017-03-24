@@ -654,21 +654,21 @@ angular.module('starter.controllers', ['starter.services', 'ionic-notification-b
     })
 
     $scope.trabajadorCalcularHoras = function() {
-            console.log("trabajadorHoras" + $scope.trabajadorHoras.id)
-            UsuarioServicio.obtenerPersonalHoras($scope.trabajadorHoras.id).then(function(success) {
-                //console.log(success)
-                $scope.obtenerPersonalHoras = success;
-                console.log("obtenerPersonalHoras" + $scope.obtenerPersonalHoras[0].total)
+        console.log("trabajadorHoras" + $scope.trabajadorHoras.id)
+        UsuarioServicio.obtenerPersonalHoras($scope.trabajadorHoras.id).then(function(success) {
+            //console.log(success)
+            $scope.obtenerPersonalHoras = success;
+            console.log("obtenerPersonalHoras" + $scope.obtenerPersonalHoras[0].total)
 
-            })
-            $ionicPopup.alert({
-                title: '<span>Horas trabajadas</span>',
-                template: '{{obtenerPersonalHoras[0].Nombre}} {{obtenerPersonalHoras[0].total}} horas',
-                scope: $scope
-            });
-        }
-        /*$scope.pagoSeleccionada = function(id) {
-            
+        })
+        $ionicPopup.alert({
+            title: '<span>Horas trabajadas</span>',
+            template: '{{obtenerPersonalHoras[0].Nombre}} {{obtenerPersonalHoras[0].total}} horas',
+            scope: $scope
+        });
+    }
+    $scope.pagoSeleccionada = function(id) {
+
             $ionicPopup.show({
                 title: 'Cerrar mesa ' + id,
                 template: 'Estas segura que deseas cerrar la mesa <b>' + id + '</b>',
@@ -695,18 +695,18 @@ angular.module('starter.controllers', ['starter.services', 'ionic-notification-b
                 }
             });;
         }
-        $scope.pagoSeleccionadaAccion = function(idmesa, id) {
-            console.log('You are not sure' + idmesa);
-            var mesaSeleccionada = UsuarioServicio.devolverEtiqueta($scope.listaMesasPago, "referencia", idmesa, "idmesa")
-            var mesaSeleccionadaTotal = UsuarioServicio.devolverEtiqueta($scope.listaMesasPago, "referencia", idmesa, "cantidad")
-            UsuarioServicio.addPagoMesa(mesaSeleccionada, id, mesaSeleccionadaTotal).then(function(success) {
-                UsuarioServicio.cambiarEstadoMesa(mesaSeleccionada).then(function(success) {
-                    UsuarioServicio.cerrarMesa(mesaSeleccionada).then(function(success) {
-                        $state.go('app.mesas', { reload: true })
-                    })
-                })
-            })
-        }*/
+        /* $scope.pagoSeleccionadaAccion = function(idmesa, id) {
+             console.log('You are not sure' + idmesa);
+             var mesaSeleccionada = UsuarioServicio.devolverEtiqueta($scope.listaMesasPago, "referencia", idmesa, "idmesa")
+             var mesaSeleccionadaTotal = UsuarioServicio.devolverEtiqueta($scope.listaMesasPago, "referencia", idmesa, "cantidad")
+             UsuarioServicio.addPagoMesa(mesaSeleccionada, id, mesaSeleccionadaTotal).then(function(success) {
+                 UsuarioServicio.cambiarEstadoMesa(mesaSeleccionada).then(function(success) {
+                     UsuarioServicio.cerrarMesa(mesaSeleccionada).then(function(success) {
+                         $state.go('app.mesas', { reload: true })
+                     })
+                 })
+             })
+         }*/
     $scope.accionPersonal = function(id) {
         $rootScope.accionPersonal = id
         if (id == 10) {
