@@ -78,23 +78,10 @@
                 </ion-footer-bar>
                 <ion-scroll style="height: 370px">
                     <ion-list>
-                        <ion-item ng-repeat="item in listaPlatosMesa">
-                            <div class="row">
-                                <div class="col">
-                                    <h2>{{item.nombre}}</h2>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col" ng-if="item.count>0"><button class="button button-assertive icon ion-minus-circled" ng-click="item.count= item.count-1"></button></div>
-                                <div class="col">
-                                    {{item.cantidad}}
-                                    <div ng-if="item.count>0" class="item text-input" value="" name="cPlato" ng-model="contador">{{item.count}}</div>
-                                </div>
-                                <div class="col"><button class="button button-balanced  icon ion-plus-circled" ng-click="item.count= item.count+1"></button></div>
-                                <div class="col"> <button class="button button-positive  icon ion-checkmark-circled" ng-click="actualizarPlato(item.idPlato,item.count)"></button></div>
-                            </div>
-                            <div class="row">
-                            </div>
+                        <ion-item ng-repeat="item in listaPlatosMesa" ng-click="ordenPlato(item)">
+                            {{item.cantidad}} <span style="margin-right:2px;border-right:2px solid black"></span><span ng-if="item.estado==null" class="">{{item.nombre}}</span>
+                            <span ng-if="item.estado['data']==0" class="nok">{{item.nombre}}</span>
+                            <span ng-if="item.estado['data']==1" class="ok">{{item.nombre}}</span>
                         </ion-item>
                     </ion-list>
                 </ion-scroll>

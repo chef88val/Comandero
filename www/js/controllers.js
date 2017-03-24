@@ -368,7 +368,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic-notification-b
                             })
                         })
                     } else {
-                        console.log('You are not sure');
+                        $ionicPopup.alert({ title: "Error", template: 'Algo no ha ido bien actualizando el plato', })
                     }
                 });;
             }
@@ -394,6 +394,64 @@ angular.module('starter.controllers', ['starter.services', 'ionic-notification-b
             $scope.listaBebidasMesa = success;
         })
 
+        $scope.ordenPlato = function(id) {
+            var tituloordenPlato = 'Pedir ' + id.nombre + ', mesa: ' + $scope.mesaSeleccionada.referencia
+            var templateordenPlato = 'Que deseas hacer con <b>' + id.nombre + '</b>'
+            if (id.estado == null) {
+                $ionicPopup.show({
+                    title: tituloordenPlato,
+                    template: templateordenPlato,
+                    scope: $scope,
+                    buttons: [
+                        { text: "Nada" },
+                        { text: "Pedir", type: 'button-positive', onTap: function(e) { return "Pedir" } }
+                    ]
+                }).then(function(res) {
+                    if (res) {
+                        UsuarioServicio.pedirPlato($scope.mesaSeleccionada.idmesa, id.idplato).then(function(success) {
+                            UsuarioServicio.obtenerPlatosMesa($scope.mesaSeleccionada.idmesa).then(function(success) {
+                                console.log(success[0].estado["data"])
+                                $scope.listaPlatosMesa = success;
+
+                            })
+                        })
+
+                    } else {
+                        $ionicPopup.alert({ title: "Error", template: 'Algo no ha ido bien actualizando el plato', })
+                    }
+                });;
+            } else if (id.estado["data"] == 0) {
+                $ionicPopup.show({
+                    title: tituloordenPlato,
+                    template: templateordenPlato,
+                    scope: $scope,
+                    buttons: [
+                        { text: "Nada" },
+
+                        { text: "Mesa", type: 'button-assertive', onTap: function(e) { return "Sacado" } }
+                    ]
+                }).then(function(res) {
+                    if (res) {
+                        UsuarioServicio.pedirPlato($scope.mesaSeleccionada.idmesa, id.idplato).then(function(success) {
+                            UsuarioServicio.obtenerPlatosMesa($scope.mesaSeleccionada.idmesa).then(function(success) {
+                                console.log(success[0].estado["data"])
+                                $scope.listaPlatosMesa = success;
+
+                            })
+                        })
+
+                    } else {
+                        $ionicPopup.alert({
+                            title: "Error",
+                            template: 'Algo no ha ido bien actualizando el plato',
+                        })
+                    }
+                });;
+            } else $ionicPopup.alert({
+                title: tituloordenPlato,
+                template: 'Ya has sacado el plato',
+            })
+        }
         $scope.resumenBebidaMesa = function() {
             $ionicPopup.show({
                 template: '<ion-scroll style="height: 370px"><ion-list>                                ' +
@@ -691,7 +749,7 @@ angular.module('starter.controllers', ['starter.services', 'ionic-notification-b
                     })
 
                 } else {
-                    console.log('You are not sure');
+                    $ionicPopup.alert({ title: "Error", template: 'Algo no ha ido bien actualizando el plato', })
                 }
             });;
         }

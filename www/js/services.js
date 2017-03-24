@@ -77,7 +77,6 @@ angular.module('starter.services', ['ionic', 'ionic-notification-bar'])
                 return $http.post($rootScope.patron + '/bebida/borrarBebida/' + idmesa + '/' + idbebida).then(valorOK, valorNOK("1-No se han obtenido todos los datos", "Error de conexion"));
             },
             insertarPlato: function(idmesa, idplato, cantidad) {
-                console.log($rootScope.patron + '/plato/insertarPlato/' + idmesa + '/' + idplato + '/' + cantidad)
                 return $http.post($rootScope.patron + '/plato/insertarPlato/' + idmesa + '/' + idplato + '/' + cantidad).then(valorOK, valorNOK("insertarPlato-No se han obtenido todos los datos", "Error de conexion"));
             },
             actualizarPlato: function(idmesa, idplato, cantidad) {
@@ -91,6 +90,10 @@ angular.module('starter.services', ['ionic', 'ionic-notification-bar'])
             },
             cambiarEstadoMesa: function(referencia) {
                 return $http.put($rootScope.patron + '/camarero/cambiarEstadoMesa/' + referencia).then(valorOK, valorNOK("1-No se han obtenido todos los datos", "Error de conexion"));
+            },
+            pedirPlato: function(mesa, plato) {
+                console.log($rootScope.patron + '/camarero/pedirPlato/' + mesa + '/' + plato)
+                return $http.put($rootScope.patron + '/camarero/pedirPlato/' + mesa + '/' + plato).then(valorOK, valorNOK("1-No se han obtenido todos los datos", "Error de conexion"));
             },
             addPagoMesa: function(referencia, tipo, cantidad) {
                 return $http.post($rootScope.patron + '/camarero/addPagoMesa/' + referencia + '/' + tipo + '/' + cantidad).then(valorOK, valorNOK("1-No se han obtenido todos los datos", "Error de conexion"));
