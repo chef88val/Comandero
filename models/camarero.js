@@ -70,8 +70,23 @@ Camarero.obtenerPlatosCategorias = function(id, callback) {
     })
 }
 
+Camarero.pedirPlato = function(id, plato, callback) {
+    request.query('select bm.idplato,b.nombre as nombre , bm.cantidad,bm.estado from plato_mesa bm, plato b where bm.idplato=b.idplato and bm.idmesa=' + id, function(err, recordset) {
+        if (err) callback(err, false)
+        else if (recordset[0].estado == null)
+            request.query('update plato_mesa set estado = 0 where idmesa=' + id + ' and idplato=' + plato, function(err, recordset) {
+                if (err) callback(err, false)
+                else callback(null, recordset)
+            })
+        else
+            request.query('update plato_mesa set estado = estado XOR 1 where idmesa=' + id + ' and idplato=' + plato, function(err, recordset) {
+                if (err) callback(err, false)
+                else callback(null, recordset)
+            })
+    })
+}
 Camarero.obtenerPlatosMesa = function(id, callback) {
-    request.query('select bm.idplato,b.nombre as nombre , bm.cantidad from plato_mesa bm, plato b where bm.idplato=b.idplato and bm.idmesa=' + id, function(err, recordset) {
+    request.query('select bm.idplato,b.nombre as nombre , bm.cantidad,bm.estado from plato_mesa bm, plato b where bm.idplato=b.idplato and bm.idmesa=' + id, function(err, recordset) {
         if (err) callback(err, false)
         else callback(null, recordset)
     })
